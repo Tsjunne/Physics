@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Web
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics.Test", "Test\Physics.Test.csproj", "{9E859B92-F082-40EF-8433-D0E3911B5A03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics", "Core\Physics.csproj", "{A9CE547B-9829-4AD4-92FD-2117F0A48407}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FFD986AA-38E4-406B-B0F3-DA14534DCF25}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+		nuspec.xsd = nuspec.xsd
+		packages\repositories.config = packages\repositories.config
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 3
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://pietererzeel.visualstudio.com/defaultcollection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Test\\Physics.Test.csproj
+		SccProjectName1 = Test
+		SccLocalPath1 = Test
+		SccProjectUniqueName2 = Core\\Physics.csproj
+		SccProjectName2 = Core
+		SccLocalPath2 = Core
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9E859B92-F082-40EF-8433-D0E3911B5A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E859B92-F082-40EF-8433-D0E3911B5A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E859B92-F082-40EF-8433-D0E3911B5A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E859B92-F082-40EF-8433-D0E3911B5A03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9CE547B-9829-4AD4-92FD-2117F0A48407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9CE547B-9829-4AD4-92FD-2117F0A48407}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9CE547B-9829-4AD4-92FD-2117F0A48407}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9CE547B-9829-4AD4-92FD-2117F0A48407}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
