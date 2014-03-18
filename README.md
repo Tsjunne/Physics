@@ -7,8 +7,8 @@ A library for physical computation.
 - Free creation of unit systems like the [SI system](http://en.wikipedia.org/wiki/International_System_of_Units)
 - Perform calculations with physical quantities while retaining consistent unit results
 - Add new units on the fly by declaration or parsing
-- display physical quantities in different units and number formats
-- serialize and deserialize physical quantities
+- Display physical quantities in different units and number formats
+- Serialize and deserialize physical quantities
 
 ## Usage ##
 ### Create a new unit system ###
@@ -91,7 +91,7 @@ var quantity = new Quantity(100, J / (m ^ 3));
 var info = quantity.ToInfo();
 
 var serializer = new JavaScriptSerializer();
-var json = serializer.Serialize(info);
+var json = serializer.Serialize(info); // {"Amount":100,"Dimension":[-1,1,-2]}
 var deserializedInfo = serializer.Deserialize<QuantityInfo>(json);
 
 var result = this.System.FromInfo(deserializedInfo);
