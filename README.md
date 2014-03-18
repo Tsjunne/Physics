@@ -17,7 +17,7 @@ this.System = UnitSystemFactory.CreateSystem("SI");
 
 //Base units
 var m = this.System.AddBaseUnit("m", "metre");
-var kg = this.System.AddBaseUnit("kg", "kilogram", true);
+var kg = this.System.AddBaseUnit("kg", "kilogram", true); // flag indicates that kilogram has an inherent prefix
 var s = this.System.AddBaseUnit("s", "second");
 var A = this.System.AddBaseUnit("A", "ampere");
 var K = this.System.AddBaseUnit("K", "kelvin");
