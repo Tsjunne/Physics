@@ -23,5 +23,20 @@ namespace Physics.Test.Presentation
             display = quantity.ToString("N3", kWh);
             Assert.AreEqual("2.778 kWh", display);
         }
+
+        [TestMethod]
+        public void ThenKilogramBehavesCorrectly()
+        {
+            var mg = this.System.AddDerivedUnit("mg", "milligram", this.kg / 1000000000);
+            var t = this.System.AddDerivedUnit("t", "tonne", 1000 * this.kg);
+
+            var mass = new Quantity(10000, this.kg);
+
+            Assert.AreEqual(mass, mass.Convert(mg));
+            Assert.AreEqual(mass, mass.Convert(t));
+
+            Assert.AreEqual("10000000000000 mg", mass.ToString(mg));
+            Assert.AreEqual("10 t", mass.ToString(t));
+        }
     }
 }
