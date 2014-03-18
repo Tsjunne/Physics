@@ -65,6 +65,16 @@ var expected = new Quantity(20, kWh / m3);
 Assert.AreEqual(expected, result);
 ```
 
+### Convert quantities to equivalent units ###
+
+```C#
+var kWh = this.System.AddDerivedUnit("kWh", "kilowatt hour", UnitPrefix.k * this.W * this.h);
+var quantity = new Quantity(100, J);
+var result = quantity.Convert(kWh);
+
+Assert.AreEqual(quantity, result);
+```
+
 ### Display results ###
 
 ```C#
