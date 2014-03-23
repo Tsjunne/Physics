@@ -35,6 +35,10 @@ namespace Physics
 
         internal UnitSystem(string name, IUnitFactory unitFactory, IUnitDialect dialect)
         {
+            Check.Argument(name, "name").IsNotNull();
+            Check.Argument(unitFactory, "unitFactory").IsNotNull();
+            Check.Argument(dialect, "dialect").IsNotNull();
+
             this.unitFactory = unitFactory;
             this.dialect = dialect;
             this.Name = name;

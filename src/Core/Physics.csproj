@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Physics</RootNamespace>
     <AssemblyName>Physics</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -17,8 +17,9 @@
     <SccProvider>SAK</SccProvider>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <BuildPackage Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">false</BuildPackage>
+    <BuildPackage Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">true</BuildPackage>
     <NuSpecFile>Physics.Core.nuspec</NuSpecFile>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -75,7 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serialization\Extensions.cs" />
     <Compile Include="Serialization\QuantityInfo.cs" />
-    <Compile Include="UnitSystemBuilder.cs" />
+    <Compile Include="Systems\SI.cs" />
     <Compile Include="Unit.cs" />
     <Compile Include="UnitFactory.cs" />
     <Compile Include="UnitPrefix.cs" />

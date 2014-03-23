@@ -9,6 +9,7 @@ namespace Physics
 {
     public class Quantity : IEquatable<Quantity>
     {
+        private int hashCode;
         private Quantity coherent;
 
         public Quantity(double amount, Unit unit)
@@ -16,6 +17,9 @@ namespace Physics
             this.Amount = amount;
             this.Unit = unit;
             this.coherent = this.ToCoherent();
+
+            this.hashCode = this.GenerateHashCode();
+
         }
 
         private Quantity(double amount, Unit unit, Quantity coherent)
@@ -23,6 +27,8 @@ namespace Physics
             this.Amount = amount;
             this.Unit = unit;
             this.coherent = coherent;
+
+            this.hashCode = this.GenerateHashCode();
         }
 
         public double Amount { get; private set; }
@@ -56,10 +62,7 @@ namespace Physics
 
         public override int GetHashCode()
         {
-            var hashCode = 36;
-            hashCode = hashCode ^ this.coherent.Unit.GetHashCode();
-            hashCode = hashCode ^ this.coherent.Amount.GetHashCode();
-            return hashCode;
+            return this.hashCode;
         }
 
         public static Quantity operator +(Quantity q1, Quantity q2)
@@ -147,6 +150,14 @@ namespace Physics
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return "{0} {1}".FormatWith(this.Amount.ToString(format, formatProvider), this.Unit);
+        }
+
+        private int GenerateHashCode()
+        {
+            var hashCode = 36;
+            hashCode = hashCode ^ this.coherent.Unit.GetHashCode();
+            hashCode = hashCode ^ this.coherent.Amount.GetHashCode();
+            return hashCode;
         }
     }
 }

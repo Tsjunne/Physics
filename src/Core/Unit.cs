@@ -9,6 +9,8 @@ namespace Physics
 {
     public abstract class Unit : IEquatable<Unit>
     {
+        private int hashCode;
+
         internal Unit(IUnitSystem system, Dimension dimension)
             : this(system, 1, dimension)
         { }
@@ -20,6 +22,8 @@ namespace Physics
             this.System = system;
             this.Dimension = dimension;
             this.Factor = factor;
+
+            this.hashCode = GenerateHashCode();
         }
 
         public IUnitSystem System { get; private set; }
@@ -53,10 +57,7 @@ namespace Physics
 
         public override int GetHashCode()
         {
-            var hashCode = 36;
-            hashCode = hashCode ^ this.Dimension.GetHashCode();
-            hashCode = hashCode ^ this.Factor.GetHashCode();
-            return hashCode;
+            return this.hashCode;
         }
 
         public override bool Equals(object obj)
@@ -121,6 +122,14 @@ namespace Physics
         public override string ToString()
         {
             return this.System.Display(this);
+        }
+
+        private int GenerateHashCode()
+        {
+            var hashCode = 36;
+            hashCode = hashCode ^ this.Dimension.GetHashCode();
+            hashCode = hashCode ^ this.Factor.GetHashCode();
+            return hashCode;
         }
     }
 }
