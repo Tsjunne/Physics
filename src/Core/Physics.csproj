@@ -82,7 +82,6 @@
     <Compile Include="UnitPrefix.cs" />
     <Compile Include="UnitSystem.cs" />
     <Compile Include="UnitSystemFactory.cs" />
-    <Compile Include="ValueObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
