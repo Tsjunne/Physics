@@ -15,8 +15,8 @@ namespace Physics
         private readonly IUnitFactory unitFactory;
         private readonly IUnitDialect dialect;
         private readonly Dictionary<Dimension, KnownUnit> baseUnits;
-        private readonly Dictionary<Dimension, KnownUnit> coherentUnits;
-        private readonly Dictionary<Unit, KnownUnit> units;
+        private readonly Dictionary<Dimension, Unit> coherentUnits;
+        private readonly Dictionary<Tuple<double, Dimension>, KnownUnit> units;
         private readonly Dictionary<string, KnownUnit> unitsBySymbol;
         private readonly Unit noUnit;
 
@@ -43,8 +43,8 @@ namespace Physics
             this.dialect = dialect;
             this.Name = name;
             this.baseUnits = new Dictionary<Dimension, KnownUnit>();
-            this.coherentUnits = new Dictionary<Dimension, KnownUnit>();
-            this.units = new Dictionary<Unit, KnownUnit>();
+            this.coherentUnits = new Dictionary<Dimension, Unit>();
+            this.units = new Dictionary<Tuple<double, Dimension>, KnownUnit>();
             this.unitsBySymbol = new Dictionary<string, KnownUnit>();
             this.noUnit = new DerivedUnit(this, 1, Dimension.DimensionLess);
         }
@@ -100,14 +100,13 @@ namespace Physics
         {
             // Prefer returning a known unit
             KnownUnit known;
-            var unit = this.unitFactory.CreateUnit(this, factor, dimension);
 
-            if (this.units.TryGetValue(unit, out known))
+            if (this.units.TryGetValue(Tuple.Create(factor, dimension), out known))
             {
                 return known;
             }
 
-            return unit;
+            return this.unitFactory.CreateUnit(this, factor, dimension); ;
         }
 
         public Unit Parse(string unitExpression)
@@ -127,22 +126,11 @@ namespace Physics
 
         public Quantity MakeCoherent(Quantity quantity)
         {
-            Unit originalUnit = quantity.Unit;
+            Unit unit = quantity.Unit;
 
-            if (originalUnit.IsCoherent) return quantity;
+            if (unit.IsCoherent) return quantity;
 
-            Unit coherentUnit;
-
-            if (this.coherentUnits.ContainsKey(originalUnit.Dimension))
-            {
-                coherentUnit = this.coherentUnits[originalUnit.Dimension];
-            }
-            else
-            {
-                coherentUnit = this.unitFactory.CreateUnit(this, 1, originalUnit.Dimension);
-            }
-
-            return new Quantity(originalUnit.Factor * quantity.Amount, coherentUnit);
+            return new Quantity(unit.Factor * quantity.Amount, this.coherentUnits[unit.Dimension]);
         }
 
         private void EnsureInterpretor()
@@ -168,7 +156,7 @@ namespace Physics
 
         private void RegisterKnownUnit(KnownUnit unit)
         {
-            units.Add(unit, unit);
+            units.Add(Tuple.Create(unit.Factor, unit.Dimension), unit);
             unitsBySymbol.Add(unit.Symbol, unit);
 
             if (unit.Factor == 1)
@@ -188,7 +176,7 @@ namespace Physics
 
             KnownUnit collision;
 
-            if (this.units.TryGetValue(unit, out collision))
+            if (this.units.TryGetValue(Tuple.Create(unit.Factor, unit.Dimension), out collision))
             {
                 throw new InvalidOperationException(Messages.UnitAlreadyKnown.FormatWith(unit, collision));
             }

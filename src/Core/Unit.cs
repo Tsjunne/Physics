@@ -114,7 +114,7 @@ namespace Physics
             return unit.System.CreateUnit(factor * unit.Factor, unit.Dimension);
         }
 
-        public static Unit operator /(Unit unit, double factor)
+        public static Unit operator / (Unit unit, double factor)
         {
             return unit.System.CreateUnit(unit.Factor / factor, unit.Dimension);
         }

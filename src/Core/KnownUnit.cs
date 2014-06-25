@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Physics
 {
-    public class KnownUnit : Unit
+    public sealed class KnownUnit : Unit
     {
         internal KnownUnit(IUnitSystem system, double factor, Dimension dimension, string symbol, string name)
             : this(system, factor, dimension, symbol, name, false)

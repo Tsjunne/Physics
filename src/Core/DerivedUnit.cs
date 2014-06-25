@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Physics
 {
-    internal class DerivedUnit : Unit
+    internal sealed class DerivedUnit : Unit
     {
         internal DerivedUnit(IUnitSystem system, double factor, Dimension dimension)
             : base(system, factor, dimension)

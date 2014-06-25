@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Physics
 {
     [Serializable]
-    public class Dimension : ImmutableCollection<int>
+    public sealed class Dimension : ImmutableCollection<int>
     {
         private static Dimension dimensionLess = new Dimension(new int[] { });
 
@@ -27,7 +27,7 @@ namespace Physics
             }
         }
 
-        public static Dimension Create(params int[] exponents)
+        internal static Dimension Create(params int[] exponents)
         {
             return new Dimension(exponents);
         }
