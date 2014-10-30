@@ -13,7 +13,6 @@ namespace Physics
             : this(system, factor, dimension, symbol, name, false)
         {
             this.Symbol = symbol;
-            this.Name = name;
         }
 
         internal KnownUnit(IUnitSystem system, double factor, Dimension dimension, string symbol, string name, bool inherentPrefix)

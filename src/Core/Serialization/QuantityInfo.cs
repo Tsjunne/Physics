@@ -14,6 +14,6 @@ namespace Physics.Serialization
         [DataMember]
         public double Amount { get; set; }
         [DataMember]
-        public int[] Dimension { get; set; }
+        public Dictionary<string, int> Unit { get; set; }
     }
 }

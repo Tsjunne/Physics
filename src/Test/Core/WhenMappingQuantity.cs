@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 using System.Web.Script.Serialization;
+using Newtonsoft.Json;
 
 namespace Physics.Test.Core
 {
@@ -55,33 +56,7 @@ namespace Physics.Test.Core
         }
 
         [TestMethod]
-        public void ThenCanSerializeAndDeserializeUsingXmlSerializer()
-        {
-            var quantity = new Quantity(100, this.J / (this.m ^ 3));
-
-            var info = quantity.ToInfo();
-
-            var serializer = new XmlSerializer(typeof(QuantityInfo));
-
-            var builder = new StringBuilder();
-            using (var writer = XmlWriter.Create(builder))
-            {
-                serializer.Serialize(writer, info);
-            }
-
-            QuantityInfo deserializedInfo;
-            using (var reader = XmlReader.Create(new StringReader(builder.ToString())))
-            {
-                deserializedInfo = (QuantityInfo)serializer.Deserialize(reader);
-            }
-
-            var result = this.System.FromInfo(deserializedInfo);
-
-            Assert.AreEqual(quantity, result);
-        }
-
-        [TestMethod]
-        public void ThenCanSerializeAndDeserializeUsingJsonSerializer()
+        public void ThenCanSerializeAndDeserializeUsingJavaScriptSerializer()
         {
             var quantity = new Quantity(100, this.J / (this.m ^ 3));
 
@@ -90,6 +65,21 @@ namespace Physics.Test.Core
             var serializer = new JavaScriptSerializer();
             var json = serializer.Serialize(info);
             var deserializedInfo = serializer.Deserialize<QuantityInfo>(json);
+
+            var result = this.System.FromInfo(deserializedInfo);
+
+            Assert.AreEqual(quantity, result);
+        }
+
+        [TestMethod]
+        public void ThenCanSerializeAndDeserializeUsingJsonNet()
+        {
+            var quantity = new Quantity(100, this.J / (this.m ^ 3));
+
+            var info = quantity.ToInfo();
+
+            var json = JsonConvert.SerializeObject(info);
+            var deserializedInfo = JsonConvert.DeserializeObject<QuantityInfo>(json);
 
             var result = this.System.FromInfo(deserializedInfo);
 

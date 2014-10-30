@@ -13,7 +13,17 @@ namespace Physics
             return string.Format(format, args);
         }
 
-        public static IEnumerable<TOut> Merge<TIn, TOut>(this IEnumerable<TIn> collection1, IEnumerable<TIn> collection2, Func<TIn, TIn, TOut> aggregation)
+        public static IEnumerable<TOut> Merge<TIn1, TIn2, TOut>(this IEnumerable<TIn1> collection1, IEnumerable<TIn2> collection2, Func<TIn1, TIn2, TOut> aggregation, bool matchShortest = false)
+        {
+            if (matchShortest)
+            {
+                return collection1.Merge(collection2, aggregation, (more1, more2) => more1 && more2);
+            }
+
+            return collection1.Merge(collection2, aggregation, (more1, more2) => more1 || more2);
+        }
+
+        private static IEnumerable<TOut> Merge<TIn1, TIn2, TOut>(this IEnumerable<TIn1> collection1, IEnumerable<TIn2> collection2, Func<TIn1, TIn2, TOut> aggregation, Func<bool, bool, bool> check)
         {
             var enumerator1 = collection1.GetEnumerator();
             var enumerator2 = collection2.GetEnumerator();
@@ -21,11 +31,11 @@ namespace Physics
             var more1 = enumerator1.MoveNext();
             var more2 = enumerator2.MoveNext();
 
-            while (more1 || more2)
+            while (check(more1, more2))
             {
                 yield return aggregation(
-                    more1 ? enumerator1.Current : default(TIn), 
-                    more2 ? enumerator2.Current : default(TIn));
+                    more1 ? enumerator1.Current : default(TIn1),
+                    more2 ? enumerator2.Current : default(TIn2));
 
                 more1 = enumerator1.MoveNext();
                 more2 = enumerator2.MoveNext();

@@ -74,7 +74,7 @@
     <Compile Include="IUnitSystem.cs" />
     <Compile Include="KnownUnit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Serialization\Extensions.cs" />
+    <Compile Include="Serialization\SerializationExtensions.cs" />
     <Compile Include="Serialization\QuantityInfo.cs" />
     <Compile Include="Systems\SI.cs" />
     <Compile Include="Unit.cs" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,7 @@ namespace Physics
         /// <summary>
         /// The base units
         /// </summary>
-        IEnumerable<KnownUnit> BaseUnits { get; }
+        ReadOnlyCollection<KnownUnit> BaseUnits { get; }
         /// <summary>
         /// Null object
         /// </summary>

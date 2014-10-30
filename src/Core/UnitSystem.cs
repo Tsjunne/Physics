@@ -3,6 +3,7 @@ using Physics.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text;
@@ -61,9 +62,12 @@ namespace Physics
             get { return this.noUnit; }
         }
 
-        public IEnumerable<KnownUnit> BaseUnits 
+        public ReadOnlyCollection<KnownUnit> BaseUnits 
         {
-            get { return this.baseUnits.Values; }
+            get 
+            { 
+                return new List<KnownUnit>(this.baseUnits.Values).AsReadOnly();
+            }
         }
 
         public IEnumerable<KnownUnit> Units
@@ -83,7 +87,15 @@ namespace Physics
 
         public Unit AddBaseUnit(string symbol, string name, bool inherentPrefix = false)
         {
-            return this.AddBaseUnit(symbol, name, 1, inherentPrefix);
+            var newUnit = this.unitFactory.CreateUnit(this, 1, symbol, name, inherentPrefix);
+            EnsureUnitIsNotRegistered(newUnit);
+
+            baseUnits.Add(newUnit.Dimension, newUnit);
+            numberOfDimensions++;
+
+            RegisterKnownUnit(newUnit);
+
+            return newUnit;
         }
 
         public Unit AddDerivedUnit(string symbol, string name, Unit unit)
@@ -111,17 +123,14 @@ namespace Physics
 
         public Unit Parse(string unitExpression)
         {
-            EnsureInterpretor();
-
-            return this.unitInterpretor.Parse(unitExpression);
+            return this.Interpretor.Parse(unitExpression);
         }
 
         public string Display(Unit unit)
         {
-            EnsureInterpretor();
-            Check.SystemKnowsDimension(this, unit.Dimension);
+            Check.UnitsAreFromSameSystem(this.noUnit, unit);
 
-            return this.unitInterpretor.ToString(unit);
+            return this.Interpretor.ToString(unit);
         }
 
         public Quantity MakeCoherent(Quantity quantity)
@@ -133,25 +142,17 @@ namespace Physics
             return new Quantity(unit.Factor * quantity.Amount, this.coherentUnits[unit.Dimension]);
         }
 
-        private void EnsureInterpretor()
+        private UnitInterpretor Interpretor
         {
-            if (this.unitInterpretor == null)
+            get
             {
-                this.unitInterpretor = new UnitInterpretor(this, new UnitDialect());
+                if (this.unitInterpretor == null)
+                {
+                    this.unitInterpretor = new UnitInterpretor(this, new UnitDialect());
+                }
+
+                return this.unitInterpretor;
             }
-        }
-
-        private Unit AddBaseUnit(string symbol, string name, double factor, bool inherentPrefix)
-        {
-            var newUnit = this.unitFactory.CreateUnit(this, factor, symbol, name, inherentPrefix);
-            EnsureUnitIsNotRegistered(newUnit);
-
-            baseUnits.Add(newUnit.Dimension, newUnit);
-            numberOfDimensions++;
-
-            RegisterKnownUnit(newUnit);
-
-            return newUnit;
         }
 
         private void RegisterKnownUnit(KnownUnit unit)
