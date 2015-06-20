@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Physics
 {
     public abstract class Unit : IEquatable<Unit>
     {
-        private int hashCode;
+        private readonly int hashCode;
 
         internal Unit(IUnitSystem system, Dimension dimension)
             : this(system, 1, dimension)
@@ -17,7 +12,7 @@ namespace Physics
 
         internal Unit(IUnitSystem system, double factor, Dimension dimension)
         {
-            Check.Argument(dimension, "dimension").IsNotNull();
+            Check.Argument(dimension, nameof(dimension)).IsNotNull();
 
             this.System = system;
             this.Dimension = dimension;
@@ -26,9 +21,9 @@ namespace Physics
             this.hashCode = GenerateHashCode();
         }
 
-        public IUnitSystem System { get; private set; }
-        public double Factor { get; private set; }
-        public Dimension Dimension { get; private set; }
+        public IUnitSystem System { get; }
+        public double Factor { get; }
+        public Dimension Dimension { get; }
 
         public bool HasSameSystem(Unit other)
         {
@@ -41,10 +36,7 @@ namespace Physics
                 && this.Dimension.Equals(other.Dimension);
         }
 
-        public bool IsCoherent
-        {
-            get { return this.Factor == 1; }
-        }
+        public bool IsCoherent => this.Factor.Equals(1);
 
         public bool Equals(Unit other)
         {
@@ -81,8 +73,8 @@ namespace Physics
 
         public static Unit operator * (Unit unit1, Unit unit2)
         {
-            Check.Argument(unit1, "unit1").IsNotNull();
-            Check.Argument(unit2, "unit2").IsNotNull();
+            Check.Argument(unit1, nameof(unit1)).IsNotNull();
+            Check.Argument(unit2, nameof(unit2)).IsNotNull();
             Check.UnitsAreFromSameSystem(unit1, unit2);
 
             return unit1.System.CreateUnit(unit1.Factor * unit2.Factor, unit1.Dimension * unit2.Dimension);
@@ -90,8 +82,8 @@ namespace Physics
 
         public static Unit operator / (Unit unit1, Unit unit2)
         {
-            Check.Argument(unit1, "unit1").IsNotNull();
-            Check.Argument(unit2, "unit2").IsNotNull();
+            Check.Argument(unit1, nameof(unit1)).IsNotNull();
+            Check.Argument(unit2, nameof(unit2)).IsNotNull();
             Check.UnitsAreFromSameSystem(unit1, unit2);
 
             return unit1.System.CreateUnit(unit1.Factor / unit2.Factor, unit1.Dimension / unit2.Dimension);
@@ -99,7 +91,7 @@ namespace Physics
 
         public static Unit operator ^ (Unit unit, int exponent)
         {
-            Check.Argument(unit, "unit").IsNotNull();
+            Check.Argument(unit, nameof(unit)).IsNotNull();
 
             return unit.System.CreateUnit(Math.Pow(unit.Factor, exponent), unit.Dimension ^ exponent);
         }
@@ -126,10 +118,10 @@ namespace Physics
 
         private int GenerateHashCode()
         {
-            var hashCode = 36;
-            hashCode = hashCode ^ this.Dimension.GetHashCode();
-            hashCode = hashCode ^ this.Factor.GetHashCode();
-            return hashCode;
+            var hash = 36;
+            hash = hash ^ this.Dimension.GetHashCode();
+            hash = hash ^ this.Factor.GetHashCode();
+            return hash;
         }
     }
 }

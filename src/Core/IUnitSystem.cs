@@ -31,7 +31,7 @@ namespace Physics
         /// <summary>
         /// Gets a unit by symbol
         /// </summary>
-        /// <param name="key">the symbol</param>
+        /// <param name="symbol">the symbol</param>
         /// <returns>The unit</returns>
         KnownUnit this[string symbol] { get; }
 
@@ -40,6 +40,7 @@ namespace Physics
         /// </summary>
         /// <param name="symbol">The symbol</param>
         /// <param name="name">The name</param>
+        /// <param name="inherentPrefix"></param>
         /// <returns>The base units</returns>
         Unit AddBaseUnit(string symbol, string name, bool inherentPrefix = false);
         /// <summary>

@@ -11,12 +11,12 @@ namespace Physics
 {
     public class ImmutableCollection<TItem> : ReadOnlyCollection<TItem>, IEquatable<ImmutableCollection<TItem>>
     {
-        private int hashCode;
-        bool hashed;
+        private readonly int hashCode;
 
         public ImmutableCollection(IList<TItem> items)
             : base(items)
         {
+            this.hashCode = this.Items.Hash();
         }
 
         public bool Equals(ImmutableCollection<TItem> other)
@@ -32,12 +32,6 @@ namespace Physics
 
         public override int GetHashCode()
         {
-            if (!hashed)
-            {
-                this.hashCode = this.Items.Hash();
-                hashed = true;
-            }
-
             return this.hashCode;
         }
     }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Physics
 {
@@ -44,13 +41,14 @@ namespace Physics
 
         public static int Hash<T>(this IEnumerable<T> collection)
         {
-            if (!collection.Any()) return 0;
-
             var hash = 17;
 
             foreach (var item in collection)
             {
-                hash = hash * 23 + item.GetHashCode();
+                unchecked
+                {
+                    hash = hash*23 + item.GetHashCode();
+                }
             }
 
             return hash;

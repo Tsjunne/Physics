@@ -39,8 +39,8 @@ namespace Physics
 
         internal class ArgumentCheck<T>
         {
-            private T argument;
-            string paramName;
+            private readonly T argument;
+            readonly string paramName;
 
             public ArgumentCheck(T argument, string paramName)
             {

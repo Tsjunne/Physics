@@ -36,9 +36,9 @@ namespace Physics
 
         internal UnitSystem(string name, IUnitFactory unitFactory, IUnitDialect dialect)
         {
-            Check.Argument(name, "name").IsNotNull();
-            Check.Argument(unitFactory, "unitFactory").IsNotNull();
-            Check.Argument(dialect, "dialect").IsNotNull();
+            Check.Argument(name, nameof(name)).IsNotNull();
+            Check.Argument(unitFactory, nameof(unitFactory)).IsNotNull();
+            Check.Argument(dialect, nameof(dialect)).IsNotNull();
 
             this.unitFactory = unitFactory;
             this.dialect = dialect;
@@ -160,7 +160,7 @@ namespace Physics
             units.Add(Tuple.Create(unit.Factor, unit.Dimension), unit);
             unitsBySymbol.Add(unit.Symbol, unit);
 
-            if (unit.Factor == 1)
+            if (unit.Factor.Equals(1))
             {
                 this.coherentUnits.Add(unit.Dimension, unit);
             }
@@ -202,10 +202,7 @@ namespace Physics
         {
             this.unitInterpretor = null;
 
-            if (this.CollectionChanged != null)
-            {
-                this.CollectionChanged(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newUnit));
-            }
+            this.CollectionChanged?.Invoke(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, newUnit));
         }
         #endregion
     }

@@ -1,16 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Physics
 {
     public class Quantity : IEquatable<Quantity>
     {
-        private int hashCode;
-        private Quantity coherent;
+        private readonly int hashCode;
+        private readonly Quantity coherent;
 
         public Quantity(double amount, Unit unit)
         {
@@ -31,8 +27,8 @@ namespace Physics
             this.hashCode = this.GenerateHashCode();
         }
 
-        public double Amount { get; private set; }
-        public Unit Unit { get; private set; }
+        public double Amount { get; }
+        public Unit Unit { get; }
 
         public Quantity ToCoherent()
         {
@@ -154,10 +150,10 @@ namespace Physics
 
         private int GenerateHashCode()
         {
-            var hashCode = 36;
-            hashCode = hashCode ^ this.coherent.Unit.GetHashCode();
-            hashCode = hashCode ^ this.coherent.Amount.GetHashCode();
-            return hashCode;
+            var hash = 36;
+            hash = hash ^ this.coherent.Unit.GetHashCode();
+            hash = hash ^ this.coherent.Amount.GetHashCode();
+            return hash;
         }
     }
 }

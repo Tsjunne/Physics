@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Physics
 {
@@ -10,25 +7,27 @@ namespace Physics
     {
         static UnitPrefix()
         {
-            Prefixes = new Dictionary<string, UnitPrefix>();
+            Prefixes = new Dictionary<string, UnitPrefix>
+            {
+                {Z.Symbol, Z},
+                {E.Symbol, E},
+                {P.Symbol, P},
+                {T.Symbol, T},
+                {G.Symbol, G},
+                {M.Symbol, M},
+                {k.Symbol, k},
+                {d.Symbol, d},
+                {c.Symbol, c},
+                {m.Symbol, m},
+                {µ.Symbol, µ},
+                {n.Symbol, n},
+                {p.Symbol, p},
+                {f.Symbol, f},
+                {a.Symbol, a},
+                {z.Symbol, z},
+                {y.Symbol, y}
+            };
 
-            Prefixes.Add(Z.Symbol, Z);
-            Prefixes.Add(E.Symbol, E);
-            Prefixes.Add(P.Symbol, P);
-            Prefixes.Add(T.Symbol, T);
-            Prefixes.Add(G.Symbol, G);
-            Prefixes.Add(M.Symbol, M);
-            Prefixes.Add(k.Symbol, k);
-            Prefixes.Add(d.Symbol, d);
-            Prefixes.Add(c.Symbol, c);
-            Prefixes.Add(m.Symbol, m);
-            Prefixes.Add(µ.Symbol, µ);
-            Prefixes.Add(n.Symbol, n);
-            Prefixes.Add(p.Symbol, p);
-            Prefixes.Add(f.Symbol, f);
-            Prefixes.Add(a.Symbol, a);
-            Prefixes.Add(z.Symbol, z);
-            Prefixes.Add(y.Symbol, y);
         }
 
         public UnitPrefix(string symbol, string name, int exponent)
@@ -39,10 +38,10 @@ namespace Physics
             this.Factor = Math.Pow(10, this.Exponent);
         }
 
-        public string Symbol { get; private set; }
-        public string Name { get; private set; }
-        public int Exponent { get; private set; }
-        public double Factor { get; private set; }
+        public string Symbol { get; }
+        public string Name { get; }
+        public int Exponent { get; }
+        public double Factor { get; }
 
         public override string ToString()
         {

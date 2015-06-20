@@ -8,19 +8,8 @@ namespace Physics.Presentation
 {
     internal class UnitDialect : IUnitDialect
     {
-        public Token Division 
-        {
-            get { return new Token("/"); }
-        }
-
-        public Token Multiplication
-        {
-            get { return new Token(" ", "·", "×" ); }
-        }
-
-        public Token Exponentiation
-        {
-            get { return new Token("^"); }
-        }
+        public Token Division => new Token("/");
+        public Token Multiplication => new Token(" ", "·", "×" );
+        public Token Exponentiation => new Token("^");
     }
 }

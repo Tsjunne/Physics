@@ -16,7 +16,7 @@ namespace Physics
         private Dimension(int[] exponents)
             : base(Trim(exponents))
         {
-            Check.Argument(exponents, "exponents").IsNotNull();
+            Check.Argument(exponents, nameof(exponents)).IsNotNull();
         }
 
         public static Dimension DimensionLess
@@ -34,23 +34,23 @@ namespace Physics
 
         public static Dimension operator *(Dimension dimension1, Dimension dimension2)
         {
-            Check.Argument(dimension1, "dimension1").IsNotNull();
-            Check.Argument(dimension2, "dimension2").IsNotNull();
+            Check.Argument(dimension1, nameof(dimension1)).IsNotNull();
+            Check.Argument(dimension2, nameof(dimension2)).IsNotNull();
 
             return new Dimension(dimension1.Merge(dimension2, (x, y) => x + y).ToArray());
         }
 
         public static Dimension operator /(Dimension dimension1, Dimension dimension2)
         {
-            Check.Argument(dimension1, "dimension1").IsNotNull();
-            Check.Argument(dimension2, "dimension2").IsNotNull();
+            Check.Argument(dimension1, nameof(dimension1)).IsNotNull();
+            Check.Argument(dimension2, nameof(dimension2)).IsNotNull();
 
             return new Dimension(dimension1.Merge(dimension2, (x, y) => x - y).ToArray());
         }
 
         public static Dimension operator ^(Dimension dimension, int exponent)
         {
-            Check.Argument(dimension, "dimension").IsNotNull();
+            Check.Argument(dimension, nameof(dimension)).IsNotNull();
 
             return new Dimension(dimension.Select(e => e * exponent).ToArray());
         }
