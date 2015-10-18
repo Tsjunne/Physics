@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Physics
 {
@@ -28,7 +24,8 @@ namespace Physics
         {
             if (system.NumberOfDimensions < dimension.Count)
             {
-                throw new InvalidOperationException(Messages.DimensionUnknown.FormatWith(system.Name, system.NumberOfDimensions));
+                throw new InvalidOperationException(Messages.DimensionUnknown.FormatWith(system.Name,
+                    system.NumberOfDimensions));
             }
         }
 
@@ -40,7 +37,7 @@ namespace Physics
         internal class ArgumentCheck<T>
         {
             private readonly T argument;
-            readonly string paramName;
+            private readonly string paramName;
 
             public ArgumentCheck(T argument, string paramName)
             {

@@ -1,17 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Physics.Serialization;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
 using System.Web.Script.Serialization;
+using System.Xml;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Physics.Serialization;
 
 namespace Physics.Test.Core
 {
@@ -21,25 +15,25 @@ namespace Physics.Test.Core
         [TestMethod]
         public void ThenCanMapToInfoAndBack()
         {
-            var quantity = new Quantity(100, this.J / (this.m ^ 3));
+            var quantity = new Quantity(100, this.J/(this.m ^ 3));
 
             var info = quantity.ToInfo();
             var result = this.System.FromInfo(info);
 
             Assert.AreEqual(quantity, result);
         }
-            
+
         [TestMethod]
         public void ThenCanSerializeAndDeserializeUsingDataContractSerializer()
         {
-            var quantity = new Quantity(100, this.J / (this.m ^ 3));
+            var quantity = new Quantity(100, this.J/(this.m ^ 3));
 
             var info = quantity.ToInfo();
 
-            var serializer = new DataContractSerializer(typeof(QuantityInfo));
-            
+            var serializer = new DataContractSerializer(typeof (QuantityInfo));
+
             var builder = new StringBuilder();
-            using(var writer = XmlWriter.Create(builder))
+            using (var writer = XmlWriter.Create(builder))
             {
                 serializer.WriteObject(writer, info);
             }
@@ -47,7 +41,7 @@ namespace Physics.Test.Core
             QuantityInfo deserializedInfo;
             using (var reader = XmlReader.Create(new StringReader(builder.ToString())))
             {
-                deserializedInfo = (QuantityInfo)serializer.ReadObject(reader);
+                deserializedInfo = (QuantityInfo) serializer.ReadObject(reader);
             }
 
             var result = this.System.FromInfo(deserializedInfo);
@@ -58,7 +52,7 @@ namespace Physics.Test.Core
         [TestMethod]
         public void ThenCanSerializeAndDeserializeUsingJavaScriptSerializer()
         {
-            var quantity = new Quantity(100, this.J / (this.m ^ 3));
+            var quantity = new Quantity(100, this.J/(this.m ^ 3));
 
             var info = quantity.ToInfo();
 
@@ -74,7 +68,7 @@ namespace Physics.Test.Core
         [TestMethod]
         public void ThenCanSerializeAndDeserializeUsingJsonNet()
         {
-            var quantity = new Quantity(100, this.J / (this.m ^ 3));
+            var quantity = new Quantity(100, this.J/(this.m ^ 3));
 
             var info = quantity.ToInfo();
 

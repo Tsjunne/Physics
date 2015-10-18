@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Physics
 {
@@ -15,11 +10,12 @@ namespace Physics
             this.Symbol = symbol;
         }
 
-        internal KnownUnit(IUnitSystem system, double factor, Dimension dimension, string symbol, string name, bool inherentPrefix)
+        internal KnownUnit(IUnitSystem system, double factor, Dimension dimension, string symbol, string name,
+            bool inherentPrefix)
             : base(system, factor, dimension)
         {
-            Check.Argument(symbol, "symbol").IsNotNull();
-            Check.Argument(name, "name").IsNotNull();
+            Check.Argument(symbol, nameof(symbol)).IsNotNull();
+            Check.Argument(name, nameof(name)).IsNotNull();
 
             this.Symbol = symbol;
             this.Name = name;
@@ -35,9 +31,8 @@ namespace Physics
             }
         }
 
-        public string Symbol { get; private set; }
+        public string Symbol { get; }
         public string Name { get; private set; }
-
         public double InherentFactor { get; private set; }
         public string BaseSymbol { get; private set; }
 

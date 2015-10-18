@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Physics.Test.Presentation
 {
@@ -9,9 +8,9 @@ namespace Physics.Test.Presentation
         [TestMethod]
         public void ThenQuantityCanBePrintedInDesiredUnitAndFormat()
         {
-            var quantity = new Quantity(10 * 1000 * 1000, this.J);
+            var quantity = new Quantity(10*1000*1000, this.J);
 
-            var kWh = this.System.AddDerivedUnit("kWh", "kilowatt hour", UnitPrefix.k * this.W * this.h);
+            var kWh = this.System.AddDerivedUnit("kWh", "kilowatt hour", UnitPrefix.k*this.W*this.h);
             string display;
 
             display = quantity.ToString();
@@ -27,10 +26,10 @@ namespace Physics.Test.Presentation
         [TestMethod]
         public void ThenKilogramBehavesCorrectly()
         {
-            var mg = this.System.AddDerivedUnit("mg", "milligram", this.kg / (1000 * 1000));
-            var t = this.System.AddDerivedUnit("t", "tonne", 1000 * this.kg);
+            var mg = this.System.AddDerivedUnit("mg", "milligram", this.kg/(1000*1000));
+            var t = this.System.AddDerivedUnit("t", "tonne", 1000*this.kg);
 
-            var mass = new Quantity(10 * 1000, this.kg);
+            var mass = new Quantity(10*1000, this.kg);
 
             Assert.AreEqual(mass, mass.Convert(mg));
             Assert.AreEqual(mass, mass.Convert(t));

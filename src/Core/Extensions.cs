@@ -10,7 +10,8 @@ namespace Physics
             return string.Format(format, args);
         }
 
-        public static IEnumerable<TOut> Merge<TIn1, TIn2, TOut>(this IEnumerable<TIn1> collection1, IEnumerable<TIn2> collection2, Func<TIn1, TIn2, TOut> aggregation, bool matchShortest = false)
+        public static IEnumerable<TOut> Merge<TIn1, TIn2, TOut>(this IEnumerable<TIn1> collection1,
+            IEnumerable<TIn2> collection2, Func<TIn1, TIn2, TOut> aggregation, bool matchShortest = false)
         {
             if (matchShortest)
             {
@@ -20,7 +21,8 @@ namespace Physics
             return collection1.Merge(collection2, aggregation, (more1, more2) => more1 || more2);
         }
 
-        private static IEnumerable<TOut> Merge<TIn1, TIn2, TOut>(this IEnumerable<TIn1> collection1, IEnumerable<TIn2> collection2, Func<TIn1, TIn2, TOut> aggregation, Func<bool, bool, bool> check)
+        private static IEnumerable<TOut> Merge<TIn1, TIn2, TOut>(this IEnumerable<TIn1> collection1,
+            IEnumerable<TIn2> collection2, Func<TIn1, TIn2, TOut> aggregation, Func<bool, bool, bool> check)
         {
             var enumerator1 = collection1.GetEnumerator();
             var enumerator2 = collection2.GetEnumerator();

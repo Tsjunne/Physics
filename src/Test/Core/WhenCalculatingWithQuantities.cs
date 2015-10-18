@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Physics;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Physics.Test.Core
 {
@@ -10,7 +8,7 @@ namespace Physics.Test.Core
         [TestMethod]
         public void ThenCanDivideAndMultipy()
         {
-            var kWh = UnitPrefix.k * W * h;
+            var kWh = UnitPrefix.k*W*h;
             var m3 = m ^ 3;
 
             // 100 kWh
@@ -20,19 +18,19 @@ namespace Physics.Test.Core
             var volume = new Quantity(5, m3);
 
             // 20 kWh/m³
-            var result = energy / volume;
-            var expected = new Quantity(20, kWh / m3);
+            var result = energy/volume;
+            var expected = new Quantity(20, kWh/m3);
 
             Assert.AreEqual(result, expected);
         }
-        
+
         [TestMethod]
         public void ThenKilogramBehavesCorrectly()
         {
             var mass100 = new Quantity(100, kg);
             var mass25 = new Quantity(25, kg);
 
-            Assert.AreEqual(mass100 / 4, mass25);
+            Assert.AreEqual(mass100/4, mass25);
         }
     }
 }

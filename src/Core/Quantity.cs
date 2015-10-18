@@ -5,8 +5,8 @@ namespace Physics
 {
     public class Quantity : IEquatable<Quantity>
     {
-        private readonly int hashCode;
         private readonly Quantity coherent;
+        private readonly int hashCode;
 
         public Quantity(double amount, Unit unit)
         {
@@ -15,7 +15,6 @@ namespace Physics
             this.coherent = this.ToCoherent();
 
             this.hashCode = this.GenerateHashCode();
-
         }
 
         private Quantity(double amount, Unit unit, Quantity coherent)
@@ -30,6 +29,14 @@ namespace Physics
         public double Amount { get; }
         public Unit Unit { get; }
 
+        public bool Equals(Quantity other)
+        {
+            if (other == null) return false;
+
+            return this.coherent.Unit == other.coherent.Unit
+                   && this.coherent.Amount == other.coherent.Amount;
+        }
+
         public Quantity ToCoherent()
         {
             return this.Unit.System.MakeCoherent(this);
@@ -40,15 +47,7 @@ namespace Physics
             if (this.Unit == unit) return this;
 
             Check.UnitsAreSameDimension(this.Unit, unit);
-            return new Quantity(this.coherent.Amount / unit.Factor, unit, this.coherent);
-        }
-
-        public bool Equals(Quantity other)
-        {
-            if (other == null) return false;
-
-            return this.coherent.Unit == other.coherent.Unit
-                && this.coherent.Amount == other.coherent.Amount;
+            return new Quantity(this.coherent.Amount/unit.Factor, unit, this.coherent);
         }
 
         public override bool Equals(object obj)
@@ -75,32 +74,32 @@ namespace Physics
 
         public static Quantity operator *(Quantity q1, Quantity q2)
         {
-            return new Quantity(q1.coherent.Amount * q2.coherent.Amount, q1.coherent.Unit * q2.coherent.Unit);
+            return new Quantity(q1.coherent.Amount*q2.coherent.Amount, q1.coherent.Unit*q2.coherent.Unit);
         }
 
         public static Quantity operator *(Quantity q, double factor)
         {
-            return new Quantity(q.coherent.Amount * factor, q.coherent.Unit);
+            return new Quantity(q.coherent.Amount*factor, q.coherent.Unit);
         }
 
         public static Quantity operator *(double factor, Quantity q)
         {
-            return new Quantity(q.coherent.Amount * factor, q.coherent.Unit);
+            return new Quantity(q.coherent.Amount*factor, q.coherent.Unit);
         }
-            
+
         public static Quantity operator /(Quantity q1, Quantity q2)
         {
-            return new Quantity(q1.coherent.Amount / q2.coherent.Amount, q1.coherent.Unit / q2.coherent.Unit);
+            return new Quantity(q1.coherent.Amount/q2.coherent.Amount, q1.coherent.Unit/q2.coherent.Unit);
         }
 
         public static Quantity operator /(Quantity q, double factor)
         {
-            return new Quantity(q.coherent.Amount / factor, q.coherent.Unit);
+            return new Quantity(q.coherent.Amount/factor, q.coherent.Unit);
         }
 
         public static Quantity operator /(double factor, Quantity q)
         {
-            return new Quantity(q.coherent.Amount / factor, q.coherent.Unit);
+            return new Quantity(q.coherent.Amount/factor, q.coherent.Unit);
         }
 
         public static Quantity operator ^(Quantity q, int exponent)
@@ -150,9 +149,9 @@ namespace Physics
 
         private int GenerateHashCode()
         {
-            var hash = 36;
-            hash = hash ^ this.coherent.Unit.GetHashCode();
-            hash = hash ^ this.coherent.Amount.GetHashCode();
+            var hash = 17;
+            hash = hash*23 + this.coherent.Unit.GetHashCode();
+            hash = hash*23 + this.coherent.Amount.GetHashCode();
             return hash;
         }
     }

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Physics.Test.Presentation
 {
@@ -9,7 +8,7 @@ namespace Physics.Test.Presentation
         [TestMethod]
         public void ThenUnitCanBePrintedAndReparsed()
         {
-            var expected = this.kg * this.m * (this.s ^ -2);
+            var expected = this.kg*this.m*(this.s ^ -2);
             var display = this.System.Display(expected);
             var result = this.System.Parse(display);
 

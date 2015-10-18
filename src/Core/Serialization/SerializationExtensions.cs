@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Physics.Serialization
 {
@@ -14,7 +11,7 @@ namespace Physics.Serialization
             var symbols = info.Unit.Keys.ToArray();
             var exponents = info.Unit.Values.ToArray();
 
-            for (int i = 0; i < info.Unit.Count; i++)
+            for (var i = 0; i < info.Unit.Count; i++)
             {
                 var baseUnit = system[symbols[i]];
 
@@ -23,7 +20,7 @@ namespace Physics.Serialization
                     throw new InvalidOperationException(Messages.UnitsNotSameSystem);
                 }
 
-                unit = unit * (baseUnit ^ exponents[i]);
+                unit = unit*(baseUnit ^ exponents[i]);
             }
 
             return new Quantity(info.Amount, unit);
@@ -37,7 +34,9 @@ namespace Physics.Serialization
             return new QuantityInfo
             {
                 Amount = coherent.Amount,
-                Unit = baseUnits.Merge(coherent.Unit.Dimension, (u, exp) => new { u.Symbol, exp }, true).ToDictionary(u => u.Symbol, u => u.exp)
+                Unit =
+                    baseUnits.Merge(coherent.Unit.Dimension, (u, exp) => new {u.Symbol, exp}, true)
+                        .ToDictionary(u => u.Symbol, u => u.exp)
             };
         }
     }

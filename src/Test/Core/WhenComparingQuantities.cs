@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Physics;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Physics.Test.Core
 {

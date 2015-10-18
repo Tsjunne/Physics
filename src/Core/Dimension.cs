@@ -1,36 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Physics
 {
     [Serializable]
     public sealed class Dimension : ImmutableCollection<int>
     {
-        private static Dimension dimensionLess = new Dimension(new int[] { });
-
-        private Dimension(int[] exponents)
+        internal Dimension(params int[] exponents)
             : base(Trim(exponents))
         {
             Check.Argument(exponents, nameof(exponents)).IsNotNull();
         }
 
-        public static Dimension DimensionLess
-        {
-            get 
-            {
-                return dimensionLess;
-            }
-        }
-
-        internal static Dimension Create(params int[] exponents)
-        {
-            return new Dimension(exponents);
-        }
+        public static Dimension DimensionLess { get; } = new Dimension();
 
         public static Dimension operator *(Dimension dimension1, Dimension dimension2)
         {
@@ -52,14 +34,14 @@ namespace Physics
         {
             Check.Argument(dimension, nameof(dimension)).IsNotNull();
 
-            return new Dimension(dimension.Select(e => e * exponent).ToArray());
+            return new Dimension(dimension.Select(e => e*exponent).ToArray());
         }
 
         private static int[] Trim(int[] exponents)
         {
             if (!exponents.Any()) return exponents;
 
-            int index = exponents.Length - 1; ;
+            var index = exponents.Length - 1;
 
             while (exponents[index] == 0)
             {
