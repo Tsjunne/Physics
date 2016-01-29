@@ -5,6 +5,28 @@ namespace Physics
 {
     public sealed class UnitPrefix
     {
+        public sealed class FullNames
+        {
+            public static UnitPrefix zetta = Z;
+            public static UnitPrefix exa = E;
+            public static UnitPrefix peta = P;
+            public static UnitPrefix tera = T;
+            public static UnitPrefix giga = G;
+            public static UnitPrefix mega = M;
+            public static UnitPrefix kilo = k;
+            public static UnitPrefix hecto = h;
+            public static UnitPrefix deca = d;
+            public static UnitPrefix centi = c;
+            public static UnitPrefix milli = m;
+            public static UnitPrefix micro = µ;
+            public static UnitPrefix nano = n;
+            public static UnitPrefix pico = p;
+            public static UnitPrefix femto = f;
+            public static UnitPrefix atto = a;
+            public static UnitPrefix zepto = z;
+            public static UnitPrefix yocto = y;
+        }
+
         public static IDictionary<string, UnitPrefix> Prefixes;
         public static UnitPrefix Z = new UnitPrefix("Z", "zetta", 21);
         public static UnitPrefix E = new UnitPrefix("E", "exa", 18);

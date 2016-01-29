@@ -89,12 +89,17 @@ namespace Physics
 
         public Unit CreateUnit(double factor, Dimension dimension)
         {
-            // Prefer returning a known unit
+            // Prefer returning a known or coherent unit
             KnownUnit known;
+            Unit coherent;
 
             if (this._units.TryGetValue(Tuple.Create(factor, dimension), out known))
             {
                 return known;
+            }
+            else if(factor.Equals(1) && this._coherentUnits.TryGetValue(dimension, out coherent))
+            {
+                return coherent;
             }
 
             return this._unitFactory.CreateUnit(this, factor, dimension);
@@ -118,7 +123,20 @@ namespace Physics
 
             if (unit.IsCoherent) return quantity;
 
-            return new Quantity(unit.Factor*quantity.Amount, this._coherentUnits[unit.Dimension]);
+            Unit coherentUnit;
+            if (!this._coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
+            {
+                lock (this._coherentUnits)
+                {
+                    if (!this._coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
+                    {
+                        coherentUnit = unit/unit.Factor;
+                        this._coherentUnits.Add(coherentUnit.Dimension, coherentUnit);
+                    }
+                }
+            }
+
+            return new Quantity(unit.Factor*quantity.Amount, coherentUnit);
         }
 
         private void RegisterKnownUnit(KnownUnit unit)
