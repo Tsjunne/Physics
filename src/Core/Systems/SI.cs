@@ -29,7 +29,7 @@
             Wb = System.AddDerivedUnit("Wb", "weber", V*s);
             T = System.AddDerivedUnit("T", "tesla", Wb*(s ^ -2));
             H = System.AddDerivedUnit("H", "inductance", Wb/A);
-            lx = System.AddDerivedUnit("lx", "immulinance", (m ^ -2)*cd);
+            lx = System.AddDerivedUnit("lx", "illuminance", (m ^ -2)*cd);
             Sv = System.AddDerivedUnit("Sv", "sievert", J/kg);
             kat = System.AddDerivedUnit("kat", "katal", (s ^ -1)*mol);
 
