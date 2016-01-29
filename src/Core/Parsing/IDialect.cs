@@ -1,4 +1,4 @@
-﻿namespace Physics.Presentation
+﻿namespace Physics.Parsing
 {
     /// <summary>
     ///     Represents a convention for unit representation
@@ -6,7 +6,7 @@
     /// <remarks>
     ///     The first representation of a token will take precedence for unit display
     /// </remarks>
-    public interface IUnitDialect
+    public interface IDialect
     {
         Token Division { get; }
         Token Multiplication { get; }

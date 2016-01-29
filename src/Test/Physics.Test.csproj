@@ -82,6 +82,7 @@
     <Compile Include="Core\WhenConvertingQuantities.cs" />
     <Compile Include="Core\WhenCreatingBaseUnit.cs" />
     <Compile Include="Core\WhenMappingQuantity.cs" />
+    <Compile Include="Interpretation\WhenEvaluatingExpressions.cs" />
     <Compile Include="Interpretation\WhenParsingUnits.cs" />
     <Compile Include="Core\WhenUsingSISystem.cs" />
     <Compile Include="GivenWhenThen.cs" />

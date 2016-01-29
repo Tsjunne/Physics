@@ -1,73 +1,75 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
-using Physics.Presentation;
+using Physics.Parsing;
 
 namespace Physics
 {
     internal class UnitSystem : IUnitSystem
     {
-        private readonly Dictionary<Dimension, KnownUnit> baseUnits;
-        private readonly Dictionary<Dimension, Unit> coherentUnits;
-        private readonly IUnitDialect dialect;
-        private readonly IUnitFactory unitFactory;
-        private readonly Dictionary<Tuple<double, Dimension>, KnownUnit> units;
-        private readonly Dictionary<string, KnownUnit> unitsBySymbol;
-        private UnitInterpretor unitInterpretor;
+        private readonly Dictionary<Dimension, KnownUnit> _baseUnits;
+        private readonly Dictionary<Dimension, Unit> _coherentUnits;
+        private readonly IDialect _dialect;
+        private readonly IUnitFactory _unitFactory;
+        private readonly Dictionary<Tuple<double, Dimension>, KnownUnit> _units;
+        private readonly Dictionary<string, KnownUnit> _unitsBySymbol;
+        private UnitInterpretor _unitInterpretor;
 
         public UnitSystem(string name)
-            : this(name, new UnitFactory(), new UnitDialect())
+            : this(name, new UnitFactory(), new Dialect())
         {
         }
 
-        public UnitSystem(string name, IUnitDialect dialect)
+        public UnitSystem(string name, IDialect dialect)
             : this(name, new UnitFactory(), dialect)
         {
         }
 
-        internal UnitSystem(string name, IUnitFactory unitFactory, IUnitDialect dialect)
+        internal UnitSystem(string name, IUnitFactory unitFactory, IDialect dialect)
         {
             Check.Argument(name, nameof(name)).IsNotNull();
             Check.Argument(unitFactory, nameof(unitFactory)).IsNotNull();
             Check.Argument(dialect, nameof(dialect)).IsNotNull();
 
-            this.unitFactory = unitFactory;
-            this.dialect = dialect;
-            this.Name = name;
-            this.baseUnits = new Dictionary<Dimension, KnownUnit>();
-            this.coherentUnits = new Dictionary<Dimension, Unit>();
-            this.units = new Dictionary<Tuple<double, Dimension>, KnownUnit>();
-            this.unitsBySymbol = new Dictionary<string, KnownUnit>();
-            this.NoUnit = new DerivedUnit(this, 1, Dimension.DimensionLess);
+            _unitFactory = unitFactory;
+            _dialect = dialect;
+            Name = name;
+            _baseUnits = new Dictionary<Dimension, KnownUnit>();
+            _coherentUnits = new Dictionary<Dimension, Unit>();
+            _units = new Dictionary<Tuple<double, Dimension>, KnownUnit>();
+            _unitsBySymbol = new Dictionary<string, KnownUnit>();
+            NoUnit = new DerivedUnit(this, 1, Dimension.DimensionLess);
         }
 
         private UnitInterpretor Interpretor
-            => this.unitInterpretor ?? (this.unitInterpretor = new UnitInterpretor(this, dialect));
+            => this._unitInterpretor ?? (this._unitInterpretor = new UnitInterpretor(this, _dialect));
 
         public string Name { get; }
         public int NumberOfDimensions { get; private set; }
         public Unit NoUnit { get; }
-        public IEnumerable<KnownUnit> BaseUnits => this.baseUnits.Values;
+        public IEnumerable<KnownUnit> BaseUnits => this._baseUnits.Values;
 
         public KnownUnit this[string key]
         {
             get
             {
                 KnownUnit unit;
-                this.unitsBySymbol.TryGetValue(key, out unit);
+                this._unitsBySymbol.TryGetValue(key, out unit);
                 return unit;
             }
         }
 
         public Unit AddBaseUnit(string symbol, string name, bool inherentPrefix = false)
         {
-            var newUnit = this.unitFactory.CreateUnit(this, 1, CreateNewBaseDimension(this.BaseUnits.Count()), symbol,
+            var newUnit = this._unitFactory.CreateUnit(this, 1, CreateNewBaseDimension(this.BaseUnits.Count()), symbol,
                 name,
                 inherentPrefix);
             EnsureUnitIsNotRegistered(newUnit);
 
-            baseUnits.Add(newUnit.Dimension, newUnit);
+            _baseUnits.Add(newUnit.Dimension, newUnit);
             NumberOfDimensions++;
 
             RegisterKnownUnit(newUnit);
@@ -77,7 +79,7 @@ namespace Physics
 
         public Unit AddDerivedUnit(string symbol, string name, Unit unit)
         {
-            var newUnit = this.unitFactory.CreateUnit(this, unit.Factor, unit.Dimension, symbol, name, false);
+            var newUnit = this._unitFactory.CreateUnit(this, unit.Factor, unit.Dimension, symbol, name, false);
             EnsureUnitIsNotRegistered(newUnit);
 
             RegisterKnownUnit(newUnit);
@@ -90,12 +92,12 @@ namespace Physics
             // Prefer returning a known unit
             KnownUnit known;
 
-            if (this.units.TryGetValue(Tuple.Create(factor, dimension), out known))
+            if (this._units.TryGetValue(Tuple.Create(factor, dimension), out known))
             {
                 return known;
             }
 
-            return this.unitFactory.CreateUnit(this, factor, dimension);
+            return this._unitFactory.CreateUnit(this, factor, dimension);
         }
 
         public Unit Parse(string unitExpression)
@@ -116,30 +118,30 @@ namespace Physics
 
             if (unit.IsCoherent) return quantity;
 
-            return new Quantity(unit.Factor*quantity.Amount, this.coherentUnits[unit.Dimension]);
+            return new Quantity(unit.Factor*quantity.Amount, this._coherentUnits[unit.Dimension]);
         }
 
         private void RegisterKnownUnit(KnownUnit unit)
         {
-            units.Add(Tuple.Create(unit.Factor, unit.Dimension), unit);
-            unitsBySymbol.Add(unit.Symbol, unit);
+            _units.Add(Tuple.Create(unit.Factor, unit.Dimension), unit);
+            _unitsBySymbol.Add(unit.Symbol, unit);
 
             if (unit.Factor.Equals(1))
             {
-                this.coherentUnits.Add(unit.Dimension, unit);
+                this._coherentUnits.Add(unit.Dimension, unit);
             }
         }
 
         private void EnsureUnitIsNotRegistered(KnownUnit unit)
         {
-            if (this.units.Values.Any(u => u.Symbol == unit.Symbol))
+            if (this._units.Values.Any(u => u.Symbol == unit.Symbol))
             {
                 throw new InvalidOperationException(Messages.UnitSymbolAlreadyKnown.FormatWith(unit.Symbol));
             }
 
             KnownUnit collision;
 
-            if (this.units.TryGetValue(Tuple.Create(unit.Factor, unit.Dimension), out collision))
+            if (this._units.TryGetValue(Tuple.Create(unit.Factor, unit.Dimension), out collision))
             {
                 throw new InvalidOperationException(Messages.UnitAlreadyKnown.FormatWith(unit, collision));
             }
@@ -157,7 +159,7 @@ namespace Physics
 
         public IEnumerator<KnownUnit> GetEnumerator()
         {
-            return this.units.Values.GetEnumerator();
+            return this._units.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

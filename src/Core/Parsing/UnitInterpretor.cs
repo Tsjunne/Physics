@@ -4,18 +4,18 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Physics.Presentation
+namespace Physics.Parsing
 {
     internal class UnitInterpretor
     {
         private readonly List<KnownUnit> baseUnits;
-        private readonly IUnitDialect dialect;
+        private readonly IDialect dialect;
         private readonly Dictionary<string, Unit> parseCache = new Dictionary<string, Unit>();
         private readonly Dictionary<string, KnownUnit> prefixedUnits = new Dictionary<string, KnownUnit>();
         private readonly IUnitSystem system;
         private readonly string unitRegex;
 
-        public UnitInterpretor(IUnitSystem system, IUnitDialect dialect)
+        public UnitInterpretor(IUnitSystem system, IDialect dialect)
         {
             this.system = system;
             this.dialect = dialect;
@@ -63,12 +63,12 @@ namespace Physics.Presentation
                 builder.Append(unit.Factor).Append(" ");
             }
 
-            builder.Append(!nominator.Any() ? "1" : string.Join(this.dialect.Multiplication.First(), nominator));
+            builder.Append(!nominator.Any() ? "1" : string.Join(this.dialect.Multiplication, nominator));
 
             if (denominator.Any())
             {
-                builder.Append(" {0} ".FormatWith(this.dialect.Division.First()));
-                builder.Append(string.Join(this.dialect.Multiplication.First(), denominator));
+                builder.Append(" {0} ".FormatWith(this.dialect.Division));
+                builder.Append(string.Join(this.dialect.Multiplication, denominator));
             }
 
             return builder.ToString();
@@ -187,7 +187,7 @@ namespace Physics.Presentation
         {
             var prefixes = string.Join("|", UnitPrefix.Prefixes.Keys);
             var units = string.Join("|", this.system.Select(u => Regex.Escape(u.BaseSymbol)));
-            var exponentiationOperators = string.Join("|", this.dialect.Exponentiation.Select(Regex.Escape));
+            var exponentiationOperators = string.Join("|", this.dialect.Exponentiation.Select(c => Regex.Escape(c.ToString())));
 
             var regex = @"^(?<prefix>({0}))?(?<unit>{1})({2}(?<exponent>-?\d+))?$".FormatWith(prefixes, units,
                 exponentiationOperators);

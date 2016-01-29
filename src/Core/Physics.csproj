@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Physics</RootNamespace>
     <AssemblyName>Physics</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
@@ -29,6 +29,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -58,15 +60,20 @@
     <Compile Include="ImmutableCollection.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Check.cs" />
-    <Compile Include="Presentation\IUnitDialect.cs" />
-    <Compile Include="Presentation\Token.cs" />
-    <Compile Include="Presentation\UnitInterpretor.cs" />
-    <Compile Include="Presentation\UnitDialect.cs" />
     <Compile Include="Messages.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Messages.resx</DependentUpon>
     </Compile>
+    <Compile Include="Parsing\BinaryOperationExpression.cs" />
+    <Compile Include="Parsing\Expression.cs" />
+    <Compile Include="Parsing\ExpressionParser.cs" />
+    <Compile Include="Parsing\IDialect.cs" />
+    <Compile Include="Parsing\Operator.cs" />
+    <Compile Include="Parsing\QuantityExpression.cs" />
+    <Compile Include="Parsing\Token.cs" />
+    <Compile Include="Parsing\Dialect.cs" />
+    <Compile Include="Parsing\UnitInterpretor.cs" />
     <Compile Include="Quantity.cs" />
     <Compile Include="DerivedUnit.cs" />
     <Compile Include="Dimension.cs" />
