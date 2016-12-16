@@ -1,5 +1,5 @@
-﻿using FakeItEasy;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
 namespace Physics.Test.Core
 {
@@ -9,7 +9,7 @@ namespace Physics.Test.Core
         [TestMethod]
         public void ThenUnitsWithSameDimensionAndFactorAreEqual()
         {
-            var system = A.Fake<IUnitSystem>();
+            var system = Substitute.For<IUnitSystem>();
 
             var unit1 = new KnownUnit(system, 1, new Dimension(1), "x", "x");
             var unit2 = new KnownUnit(system, 1, new Dimension(1), "x", "x");
