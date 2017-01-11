@@ -3,7 +3,7 @@ using System.Globalization;
 
 namespace Physics
 {
-    public class Quantity : IEquatable<Quantity>
+    public class Quantity : IEquatable<Quantity>, IComparable<Quantity>
     {
         private readonly Quantity coherent;
         private readonly int hashCode;
@@ -31,10 +31,18 @@ namespace Physics
 
         public bool Equals(Quantity other)
         {
-            if (other == null) return false;
+            if (ReferenceEquals(other, null)) return false;
 
             return this.coherent.Unit == other.coherent.Unit
                    && this.coherent.Amount == other.coherent.Amount;
+        }
+
+        public int CompareTo(Quantity other)
+        {
+            if (this < other) return -1;
+            if (this > other) return 1;
+
+            return 0;
         }
 
         public Quantity ToCoherent()
@@ -59,17 +67,66 @@ namespace Physics
         {
             return this.hashCode;
         }
+        
+        public static bool operator ==(Quantity quantity1, Quantity quantity2)
+        {
+            if (ReferenceEquals(quantity1, quantity2)) return true;
+            if (ReferenceEquals(quantity1, null)) return false;
+
+            return quantity1.Equals(quantity2);
+        }
+
+        public static bool operator !=(Quantity quantity1, Quantity quantity2)
+        {
+            return !(quantity1 == quantity2);
+        }
+
+        public static bool operator >(Quantity quantity1, Quantity quantity2)
+        {
+            if (ReferenceEquals(quantity1, quantity2)) return false;
+            if (ReferenceEquals(quantity1, null)) return false;
+            if (ReferenceEquals(quantity2, null)) return true;
+
+            return quantity1.coherent.Amount > quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
+        }
+
+        public static bool operator <(Quantity quantity1, Quantity quantity2)
+        {
+            if (ReferenceEquals(quantity1, quantity2)) return false;
+            if (ReferenceEquals(quantity1, null)) return true;
+            if (ReferenceEquals(quantity2, null)) return false;
+
+            return quantity1.coherent.Amount < quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
+        }
+
+        public static bool operator >=(Quantity quantity1, Quantity quantity2)
+        {
+            if (ReferenceEquals(quantity1, quantity2)) return true;
+            if (ReferenceEquals(quantity1, null)) return false;
+            if (ReferenceEquals(quantity2, null)) return true;
+
+            return quantity1.coherent.Amount >= quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
+        }
+
+        public static bool operator <=(Quantity quantity1, Quantity quantity2)
+        {
+            if (ReferenceEquals(quantity1, quantity2)) return true;
+            if (ReferenceEquals(quantity1, null)) return true;
+            if (ReferenceEquals(quantity2, null)) return false;
+
+            return quantity1.coherent.Amount <= quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
+        }
 
         public static Quantity operator +(Quantity q1, Quantity q2)
         {
             Check.UnitsAreSameDimension(q1.Unit, q2.Unit);
-            return new Quantity(q1.coherent.Amount + q2.coherent.Amount, q1.Unit);
+            return new Quantity(q1.coherent.Amount + q2.coherent.Amount, q1.coherent.Unit);
         }
 
         public static Quantity operator -(Quantity q1, Quantity q2)
         {
             Check.UnitsAreSameDimension(q1.Unit, q2.Unit);
-            return new Quantity(q1.coherent.Amount - q2.coherent.Amount, q1.Unit);
+            return new Quantity(q1.coherent.Amount - q2.coherent.Amount, q1.coherent.Unit);
         }
 
         public static Quantity operator *(Quantity q1, Quantity q2)

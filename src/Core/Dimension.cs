@@ -39,11 +39,11 @@ namespace Physics
 
         private static int[] Trim(int[] exponents)
         {
-            if (!exponents.Any()) return exponents;
+            if (exponents.Length == 0) return exponents;
 
             var index = exponents.Length - 1;
 
-            while (exponents[index] == 0)
+            while (index >= 0 && exponents[index] == 0)
             {
                 index--;
             }

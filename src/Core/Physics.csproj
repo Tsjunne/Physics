@@ -91,7 +91,6 @@
     <Compile Include="UnitSystemFactory.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Physics.nuspec" />
     <None Include="Physics.snk" />
   </ItemGroup>

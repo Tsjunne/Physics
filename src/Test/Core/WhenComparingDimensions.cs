@@ -56,5 +56,11 @@ namespace Physics.Test.Core
         {
             Assert.AreEqual(new Dimension(), Dimension.DimensionLess);
         }
+
+        [TestMethod]
+        public void ThenOnlyZeroExponentsIsDimensionLess()
+        {
+            Assert.AreEqual(new Dimension(0, 0), Dimension.DimensionLess);
+        }
     }
 }

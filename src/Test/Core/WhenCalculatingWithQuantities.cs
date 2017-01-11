@@ -32,5 +32,57 @@ namespace Physics.Test.Core
 
             Assert.AreEqual(mass100/4, mass25);
         }
+
+        [TestMethod]
+        public void ThenCanAddQuantities()
+        {
+            var kWh = UnitPrefix.k * W * h;
+            
+            var energy1 = new Quantity(100, kWh);
+            var energy2 = new Quantity(50, kWh).Convert(this.J);
+
+            var expected = new Quantity(150, kWh);
+            var actual = energy1 + energy2;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ThenCanSubstractQuantities()
+        {
+            var kWh = UnitPrefix.k * W * h;
+
+            var energy1 = new Quantity(100, kWh);
+            var energy2 = new Quantity(20, kWh).Convert(this.J);
+
+            var expected = new Quantity(80, kWh);
+            var actual = energy1 - energy2;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ThenCanExponentizeQuantities()
+        {
+            var length = new Quantity(4, m);
+            var square = m*m;
+
+            var expected = new Quantity(16, square);
+            var actual = length ^ 2;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ThenDividingQuantityOfSameUnitYieldsARatio()
+        {
+            var a = new Quantity(10, m);
+            var b = new Quantity(2, m);
+
+            var expected = new Quantity(5, System.NoUnit);
+            var actual = a/b;
+
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

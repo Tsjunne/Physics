@@ -1,10 +1,17 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Globalization;
 
 namespace Physics.Test.Presentation
 {
     [TestClass]
     public class WhenPrintingQuantities : GivenSiSystem
     {
+        [TestInitialize]
+        public void Setup()
+        {
+            CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+        }
+
         [TestMethod]
         public void ThenQuantityCanBePrintedInDesiredUnitAndFormat()
         {

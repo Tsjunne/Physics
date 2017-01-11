@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using FakeItEasy;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NSubstitute;
 
 namespace Physics.Test.Core
 {
@@ -17,7 +17,7 @@ namespace Physics.Test.Core
 
         public override void When()
         {
-            baseUnit = subject.CreateUnit(A.Fake<IUnitSystem>(), 1, new Dimension(0, 1), "x", "x", false);
+            baseUnit = subject.CreateUnit(Substitute.For<IUnitSystem>(), 1, new Dimension(0, 1), "x", "x", false);
         }
 
         [TestMethod]
