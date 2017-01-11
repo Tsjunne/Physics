@@ -100,7 +100,7 @@ namespace Physics.Test.Performance
         private void RunTest(string name, Action testCase)
         {
             var timeTaken = new Stopwatch();
-            new Stopwatch();
+
             timeTaken.Start();
 
             for (var i = 0; i < 100000; i++)
