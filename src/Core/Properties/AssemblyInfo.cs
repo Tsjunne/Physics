@@ -36,15 +36,10 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyFileVersion("1.0.0")]
-[assembly: AssemblyInformationalVersion("1.0.0-alpha*")]
+[assembly: AssemblyVersion("1.2.0")]
+[assembly: AssemblyFileVersion("1.2.0")]
+[assembly: AssemblyInformationalVersion("1.2.0-alpha01")]
 [assembly:
     InternalsVisibleTo(
         "Physics.Test, PublicKey=00240000048000009400000006020000002400005253413100040000010001008574d045959007b2608503e7cb2564ac58ceb8832704277a9db46d02c925642fdefbfb65895d8101f7fc92dd0681fadf10924ee5bb6444a16e852fbee41d071ada0a4ee14e529aa6dcae640f3ec34366afd01a7c410396984207159e7ab4cbc1617a0b4bf5229e7bc2b8b07a53c72d54e0297559cdd494491d0fdd70f539659a"
-        )]
-
-[assembly:
-    InternalsVisibleTo(
-        "Physics.Parser, PublicKey=00240000048000009400000006020000002400005253413100040000010001008574d045959007b2608503e7cb2564ac58ceb8832704277a9db46d02c925642fdefbfb65895d8101f7fc92dd0681fadf10924ee5bb6444a16e852fbee41d071ada0a4ee14e529aa6dcae640f3ec34366afd01a7c410396984207159e7ab4cbc1617a0b4bf5229e7bc2b8b07a53c72d54e0297559cdd494491d0fdd70f539659a"
         )]

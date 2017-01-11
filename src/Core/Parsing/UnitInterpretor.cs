@@ -63,12 +63,12 @@ namespace Physics.Parsing
                 builder.Append(unit.Factor).Append(" ");
             }
 
-            builder.Append(!nominator.Any() ? "1" : string.Join(this.dialect.Multiplication, nominator));
+            builder.Append(!nominator.Any() ? "1" : string.Join(this.dialect.Multiplication.First(), nominator));
 
             if (denominator.Any())
             {
-                builder.Append(" {0} ".FormatWith(this.dialect.Division));
-                builder.Append(string.Join(this.dialect.Multiplication, denominator));
+                builder.Append(" {0} ".FormatWith(this.dialect.Division.First()));
+                builder.Append(string.Join(this.dialect.Multiplication.First(), denominator));
             }
 
             return builder.ToString();
