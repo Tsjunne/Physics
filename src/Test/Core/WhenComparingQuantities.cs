@@ -44,7 +44,7 @@ namespace Physics.Test.Core
         }
 
         [TestMethod]
-        public void ThanCanCompareEquivalentQuantities()
+        public void ThenCanCompareEquivalentQuantities()
         {
             var kWh = this.System.AddDerivedUnit("kWh", "kilowatt hour", UnitPrefix.k * this.W * this.h);
             var energy1 = new Quantity(100, this.J).Convert(kWh);
