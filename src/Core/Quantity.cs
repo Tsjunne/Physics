@@ -87,7 +87,7 @@ namespace Physics
             if (ReferenceEquals(quantity1, null)) return false;
             if (ReferenceEquals(quantity2, null)) return true;
 
-            return quantity1.coherent.Amount > quantity2.coherent.Amount && quantity1.Unit == quantity2.Unit;
+            return quantity1.coherent.Amount > quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
         }
 
         public static bool operator <(Quantity quantity1, Quantity quantity2)
@@ -96,7 +96,7 @@ namespace Physics
             if (ReferenceEquals(quantity1, null)) return true;
             if (ReferenceEquals(quantity2, null)) return false;
 
-            return quantity1.coherent.Amount < quantity2.coherent.Amount && quantity1.Unit == quantity2.Unit;
+            return quantity1.coherent.Amount < quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
         }
 
         public static bool operator >=(Quantity quantity1, Quantity quantity2)
@@ -105,7 +105,7 @@ namespace Physics
             if (ReferenceEquals(quantity1, null)) return false;
             if (ReferenceEquals(quantity2, null)) return true;
 
-            return quantity1.coherent.Amount >= quantity2.coherent.Amount && quantity1.Unit == quantity2.Unit;
+            return quantity1.coherent.Amount >= quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
         }
 
         public static bool operator <=(Quantity quantity1, Quantity quantity2)
@@ -114,19 +114,19 @@ namespace Physics
             if (ReferenceEquals(quantity1, null)) return true;
             if (ReferenceEquals(quantity2, null)) return false;
 
-            return quantity1.coherent.Amount <= quantity2.coherent.Amount && quantity1.Unit == quantity2.Unit;
+            return quantity1.coherent.Amount <= quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
         }
 
         public static Quantity operator +(Quantity q1, Quantity q2)
         {
             Check.UnitsAreSameDimension(q1.Unit, q2.Unit);
-            return new Quantity(q1.coherent.Amount + q2.coherent.Amount, q1.Unit);
+            return new Quantity(q1.coherent.Amount + q2.coherent.Amount, q1.coherent.Unit);
         }
 
         public static Quantity operator -(Quantity q1, Quantity q2)
         {
             Check.UnitsAreSameDimension(q1.Unit, q2.Unit);
-            return new Quantity(q1.coherent.Amount - q2.coherent.Amount, q1.Unit);
+            return new Quantity(q1.coherent.Amount - q2.coherent.Amount, q1.coherent.Unit);
         }
 
         public static Quantity operator *(Quantity q1, Quantity q2)

@@ -7,13 +7,15 @@ namespace Physics.Test.Core
     public class WhenComparingQuantities : GivenSiSystem
     {
         [TestMethod]
-        public void ThenCanCompareEquivalentQuantities()
+        public void ThenCanCheckEqualityForEquivalentQuantities()
         {
             var hour1 = new Quantity(1, this.h);
             var hour2 = new Quantity(3600, this.s);
 
+            Assert.IsTrue(hour1 == hour2);
             Assert.AreEqual(hour1, hour2);
         }
+
 
         [TestMethod]
         public void ThenEqualityOperatorsWorksAsExpected()
@@ -39,6 +41,20 @@ namespace Physics.Test.Core
 
             Assert.IsTrue(amount1 == amount2);
             Assert.IsFalse(amount1 != amount2);
+        }
+
+        [TestMethod]
+        public void ThanCanCompareEquivalentQuantities()
+        {
+            var kWh = this.System.AddDerivedUnit("kWh", "kilowatt hour", UnitPrefix.k * this.W * this.h);
+            var energy1 = new Quantity(100, this.J).Convert(kWh);
+            var energy2 = new Quantity(101, this.J);
+
+            Assert.IsTrue(energy1 < energy2);
+            Assert.IsTrue(energy1 <= energy2);
+            Assert.IsFalse(energy1 > energy2);
+            Assert.IsFalse(energy1 >= energy2);
+            Assert.IsFalse(energy1 == energy2);
         }
 
         [TestMethod]
