@@ -1,29 +1,24 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using NSubstitute;
 
 namespace Physics.Test.Core
 {
-    [TestClass]
-    public class WhenCreatingBaseUnit : GivenWhenThen
+    public class WhenCreatingBaseUnit
     {
-        private Unit baseUnit;
-        private UnitFactory subject;
+        private Unit _baseUnit;
+        private UnitFactory _subject;
 
-        public override void Given()
+        public WhenCreatingBaseUnit()
         {
-            subject = new UnitFactory();
+            _subject = new UnitFactory();
         }
-
-        public override void When()
-        {
-            baseUnit = subject.CreateUnit(Substitute.For<IUnitSystem>(), 1, new Dimension(0, 1), "x", "x", false);
-        }
-
-        [TestMethod]
+        
+        [Fact]
         public void ThenNoTrailingEmptyDimensionsAreCreated()
         {
-            Assert.AreEqual(baseUnit.Dimension.Count(), 2);
+            _baseUnit = _subject.CreateUnit(Substitute.For<IUnitSystem>(), 1, new Dimension(0, 1), "x", "x", false);
+            Assert.Equal(2, _baseUnit.Dimension.Count());
         }
     }
 }

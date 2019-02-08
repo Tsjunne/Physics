@@ -19,14 +19,14 @@ namespace Physics.Presentation
         {
             this.system = system;
             this.dialect = dialect;
-            this.unitRegex = BuildUnitRegex();
-            this.baseUnits = new List<KnownUnit>(this.system.BaseUnits);
+            unitRegex = BuildUnitRegex();
+            baseUnits = new List<KnownUnit>(this.system.BaseUnits);
 
             foreach (var unit in system)
             {
                 if (unit.Symbol != unit.BaseSymbol)
                 {
-                    this.prefixedUnits.Add(unit.BaseSymbol, unit);
+                    prefixedUnits.Add(unit.BaseSymbol, unit);
                 }
             }
         }
@@ -42,12 +42,12 @@ namespace Physics.Presentation
 
                 if (exponent > 0)
                 {
-                    nominator.Add(BuildFactor(this.baseUnits[i].Symbol, exponent));
+                    nominator.Add(BuildFactor(baseUnits[i].Symbol, exponent));
                 }
 
                 if (exponent < 0)
                 {
-                    denominator.Add(BuildFactor(this.baseUnits[i].Symbol, exponent));
+                    denominator.Add(BuildFactor(baseUnits[i].Symbol, exponent));
                 }
             }
 
@@ -63,12 +63,12 @@ namespace Physics.Presentation
                 builder.Append(unit.Factor).Append(" ");
             }
 
-            builder.Append(!nominator.Any() ? "1" : string.Join(this.dialect.Multiplication.First(), nominator));
+            builder.Append(!nominator.Any() ? "1" : string.Join(dialect.Multiplication.First(), nominator));
 
             if (denominator.Any())
             {
-                builder.Append(" {0} ".FormatWith(this.dialect.Division.First()));
-                builder.Append(string.Join(this.dialect.Multiplication.First(), denominator));
+                builder.Append(" {0} ".FormatWith(dialect.Division.First()));
+                builder.Append(string.Join(dialect.Multiplication.First(), denominator));
             }
 
             return builder.ToString();
@@ -83,7 +83,7 @@ namespace Physics.Presentation
                 return symbol;
             }
 
-            return "{0}{1}{2}".FormatWith(symbol, this.dialect.Exponentiation.First(), absolute);
+            return "{0}{1}{2}".FormatWith(symbol, dialect.Exponentiation.First(), absolute);
         }
 
         public Unit Parse(string unitExpression)
@@ -107,11 +107,11 @@ namespace Physics.Presentation
 
         private Unit ParseCore(string unitExpression)
         {
-            var fraction = unitExpression.Split(this.dialect.Division, StringSplitOptions.RemoveEmptyEntries);
+            var fraction = unitExpression.Split(dialect.Division, StringSplitOptions.RemoveEmptyEntries);
 
             if (fraction.Length == 0)
             {
-                return this.system.NoUnit;
+                return system.NoUnit;
             }
 
             if (fraction.Length == 1)
@@ -132,15 +132,15 @@ namespace Physics.Presentation
 
         private Unit ParseUnitProduct(string unitExpression)
         {
-            var factors = unitExpression.Split(this.dialect.Multiplication, StringSplitOptions.RemoveEmptyEntries);
-            var product = this.system.NoUnit;
+            var factors = unitExpression.Split(dialect.Multiplication, StringSplitOptions.RemoveEmptyEntries);
+            var product = system.NoUnit;
 
             return factors.Aggregate(product, (current, factor) => current*ParseUnit(factor));
         }
 
         private Unit ParseUnit(string unitExpression)
         {
-            var matches = Regex.Matches(unitExpression, this.unitRegex);
+            var matches = Regex.Matches(unitExpression, unitRegex);
 
             if (matches.Count == 0)
             {
@@ -156,12 +156,12 @@ namespace Physics.Presentation
             var unitSymbol = matches[0].Groups["unit"].Value;
             var exponent = matches[0].Groups["exponent"].Value;
 
-            var knownUnit = this.system[unitSymbol];
+            var knownUnit = system[unitSymbol];
             Unit parsedUnit;
 
             if (knownUnit == null)
             {
-                knownUnit = this.prefixedUnits[unitSymbol];
+                knownUnit = prefixedUnits[unitSymbol];
                 parsedUnit = knownUnit/knownUnit.InherentFactor;
             }
             else
@@ -186,8 +186,8 @@ namespace Physics.Presentation
         private string BuildUnitRegex()
         {
             var prefixes = string.Join("|", UnitPrefix.Prefixes.Keys);
-            var units = string.Join("|", this.system.Select(u => Regex.Escape(u.BaseSymbol)));
-            var exponentiationOperators = string.Join("|", this.dialect.Exponentiation.Select(Regex.Escape));
+            var units = string.Join("|", system.Select(u => Regex.Escape(u.BaseSymbol)));
+            var exponentiationOperators = string.Join("|", dialect.Exponentiation.Select(Regex.Escape));
 
             var regex = @"^(?<prefix>({0}))?(?<unit>{1})({2}(?<exponent>-?\d+))?$".FormatWith(prefixes, units,
                 exponentiationOperators);

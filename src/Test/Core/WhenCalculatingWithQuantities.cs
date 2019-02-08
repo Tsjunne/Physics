@@ -1,11 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace Physics.Test.Core
 {
-    [TestClass]
     public class WhenCalculatingWithQuantities : GivenSiSystem
     {
-        [TestMethod]
+        [Fact]
         public void ThenCanDivideAndMultipy()
         {
             var kWh = UnitPrefix.k*W*h;
@@ -21,47 +20,47 @@ namespace Physics.Test.Core
             var result = energy/volume;
             var expected = new Quantity(20, kWh/m3);
 
-            Assert.AreEqual(result, expected);
+            Assert.Equal(result, expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenKilogramBehavesCorrectly()
         {
             var mass100 = new Quantity(100, kg);
             var mass25 = new Quantity(25, kg);
 
-            Assert.AreEqual(mass100/4, mass25);
+            Assert.Equal(mass100/4, mass25);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenCanAddQuantities()
         {
             var kWh = UnitPrefix.k * W * h;
             
             var energy1 = new Quantity(100, kWh);
-            var energy2 = new Quantity(50, kWh).Convert(this.J);
+            var energy2 = new Quantity(50, kWh).Convert(J);
 
             var expected = new Quantity(150, kWh);
             var actual = energy1 + energy2;
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenCanSubstractQuantities()
         {
             var kWh = UnitPrefix.k * W * h;
 
             var energy1 = new Quantity(100, kWh);
-            var energy2 = new Quantity(20, kWh).Convert(this.J);
+            var energy2 = new Quantity(20, kWh).Convert(J);
 
             var expected = new Quantity(80, kWh);
             var actual = energy1 - energy2;
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenCanExponentizeQuantities()
         {
             var length = new Quantity(4, m);
@@ -70,10 +69,10 @@ namespace Physics.Test.Core
             var expected = new Quantity(16, square);
             var actual = length ^ 2;
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenDividingQuantityOfSameUnitYieldsARatio()
         {
             var a = new Quantity(10, m);
@@ -82,7 +81,7 @@ namespace Physics.Test.Core
             var expected = new Quantity(5, System.NoUnit);
             var actual = a/b;
 
-            Assert.AreEqual(expected, actual);
+            Assert.Equal(expected, actual);
         }
     }
 }

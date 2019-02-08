@@ -1,6 +1,9 @@
-﻿namespace Physics.Test
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace Physics.Test
 {
-    public abstract class GivenSiSystem : GivenWhenThen
+    [SuppressMessage("Style", "IDE1006:Naming Styles", Justification = "<Pending>")]
+    public abstract class GivenSiSystem
     {
         protected IUnitSystem System { get; private set; }
 
@@ -13,39 +16,39 @@
 
         #endregion
 
-        public override void Given()
+        public GivenSiSystem()
         {
-            this.System = UnitSystemFactory.CreateSystem("SI");
+            System = UnitSystemFactory.CreateSystem("SI");
 
             //Base units
-            this.m = this.System.AddBaseUnit("m", "metre");
-            this.kg = this.System.AddBaseUnit("kg", "kilogram", true);
-            this.s = this.System.AddBaseUnit("s", "second");
-            this.A = this.System.AddBaseUnit("A", "ampere");
-            this.K = this.System.AddBaseUnit("K", "kelvin");
-            this.mol = this.System.AddBaseUnit("mol", "mole");
-            this.cd = this.System.AddBaseUnit("cd", "candela");
+            m = System.AddBaseUnit("m", "metre");
+            kg = System.AddBaseUnit("kg", "kilogram", true);
+            s = System.AddBaseUnit("s", "second");
+            A = System.AddBaseUnit("A", "ampere");
+            K = System.AddBaseUnit("K", "kelvin");
+            mol = System.AddBaseUnit("mol", "mole");
+            cd = System.AddBaseUnit("cd", "candela");
 
             //Derived units
-            this.Hz = this.System.AddDerivedUnit("Hz", "hertz", s ^ -1);
-            this.N = this.System.AddDerivedUnit("N", "newton", kg*m*(s ^ -2));
-            this.Pa = this.System.AddDerivedUnit("Pa", "pascal", N*(m ^ -2));
-            this.J = this.System.AddDerivedUnit("J", "joule", N*m);
-            this.W = this.System.AddDerivedUnit("W", "watt", J/s);
-            this.C = this.System.AddDerivedUnit("C", "coulomb", s*A);
-            this.V = this.System.AddDerivedUnit("V", "volt", W/A);
-            this.F = this.System.AddDerivedUnit("F", "farad", C/V);
-            this.Ω = this.System.AddDerivedUnit("Ω", "joule", V/A);
-            this.S = this.System.AddDerivedUnit("S", "siemens", A/V);
-            this.Wb = this.System.AddDerivedUnit("Wb", "weber", V*s);
-            this.T = this.System.AddDerivedUnit("T", "tesla", Wb*(s ^ -2));
-            this.H = this.System.AddDerivedUnit("H", "inductance", Wb/A);
-            this.lx = this.System.AddDerivedUnit("lx", "immulinance", (m ^ -2)*cd);
-            this.Sv = this.System.AddDerivedUnit("Sv", "sievert", J/kg);
-            this.kat = this.System.AddDerivedUnit("kat", "katal", (s ^ -1)*mol);
+            Hz = System.AddDerivedUnit("Hz", "hertz", s ^ -1);
+            N = System.AddDerivedUnit("N", "newton", kg*m*(s ^ -2));
+            Pa = System.AddDerivedUnit("Pa", "pascal", N*(m ^ -2));
+            J = System.AddDerivedUnit("J", "joule", N*m);
+            W = System.AddDerivedUnit("W", "watt", J/s);
+            C = System.AddDerivedUnit("C", "coulomb", s*A);
+            V = System.AddDerivedUnit("V", "volt", W/A);
+            F = System.AddDerivedUnit("F", "farad", C/V);
+            Ω = System.AddDerivedUnit("Ω", "joule", V/A);
+            S = System.AddDerivedUnit("S", "siemens", A/V);
+            Wb = System.AddDerivedUnit("Wb", "weber", V*s);
+            T = System.AddDerivedUnit("T", "tesla", Wb*(s ^ -2));
+            H = System.AddDerivedUnit("H", "inductance", Wb/A);
+            lx = System.AddDerivedUnit("lx", "immulinance", (m ^ -2)*cd);
+            Sv = System.AddDerivedUnit("Sv", "sievert", J/kg);
+            kat = System.AddDerivedUnit("kat", "katal", (s ^ -1)*mol);
 
             //Incoherent units
-            this.h = this.System.AddDerivedUnit("h", "hour", 60*60*s);
+            h = System.AddDerivedUnit("h", "hour", 60*60*s);
         }
 
         #region Base units

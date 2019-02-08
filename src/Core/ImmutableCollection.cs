@@ -7,12 +7,12 @@ namespace Physics
 {
     public class ImmutableCollection<TItem> : ReadOnlyCollection<TItem>, IEquatable<ImmutableCollection<TItem>>
     {
-        private readonly int hashCode;
+        private readonly int _hashCode;
 
         public ImmutableCollection(IList<TItem> items)
             : base(items)
         {
-            this.hashCode = this.Items.Hash();
+            _hashCode = Items.Hash();
         }
 
         public bool Equals(ImmutableCollection<TItem> other)
@@ -28,7 +28,7 @@ namespace Physics
 
         public override int GetHashCode()
         {
-            return this.hashCode;
+            return _hashCode;
         }
     }
 }

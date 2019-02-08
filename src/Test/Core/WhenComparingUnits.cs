@@ -1,12 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 using NSubstitute;
 
 namespace Physics.Test.Core
 {
-    [TestClass]
-    public class WhenComparingUnits : GivenWhenThen
+    public class WhenComparingUnits
     {
-        [TestMethod]
+        [Fact]
         public void ThenUnitsWithSameDimensionAndFactorAreEqual()
         {
             var system = Substitute.For<IUnitSystem>();
@@ -15,8 +14,8 @@ namespace Physics.Test.Core
             var unit2 = new KnownUnit(system, 1, new Dimension(1), "x", "x");
             var unit3 = new KnownUnit(system, 3, new Dimension(0, 0, 1), "x", "x");
 
-            Assert.AreEqual(unit1, unit2);
-            Assert.AreNotEqual(unit2, unit3);
+            Assert.Equal(unit1, unit2);
+            Assert.NotEqual(unit2, unit3);
         }
     }
 }

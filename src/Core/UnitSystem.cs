@@ -34,35 +34,35 @@ namespace Physics
 
             this.unitFactory = unitFactory;
             this.dialect = dialect;
-            this.Name = name;
-            this.baseUnits = new Dictionary<Dimension, KnownUnit>();
-            this.coherentUnits = new Dictionary<Dimension, Unit>();
-            this.units = new Dictionary<Tuple<double, Dimension>, KnownUnit>();
-            this.unitsBySymbol = new Dictionary<string, KnownUnit>();
-            this.NoUnit = new DerivedUnit(this, 1, Dimension.DimensionLess);
+            Name = name;
+            baseUnits = new Dictionary<Dimension, KnownUnit>();
+            coherentUnits = new Dictionary<Dimension, Unit>();
+            units = new Dictionary<Tuple<double, Dimension>, KnownUnit>();
+            unitsBySymbol = new Dictionary<string, KnownUnit>();
+            NoUnit = new DerivedUnit(this, 1, Dimension.DimensionLess);
         }
 
         private UnitInterpretor Interpretor
-            => this.unitInterpretor ?? (this.unitInterpretor = new UnitInterpretor(this, dialect));
+            => unitInterpretor ?? (unitInterpretor = new UnitInterpretor(this, dialect));
 
         public string Name { get; }
         public int NumberOfDimensions { get; private set; }
         public Unit NoUnit { get; }
-        public IEnumerable<KnownUnit> BaseUnits => this.baseUnits.Values;
+        public IEnumerable<KnownUnit> BaseUnits => baseUnits.Values;
 
         public KnownUnit this[string key]
         {
             get
             {
                 KnownUnit unit;
-                this.unitsBySymbol.TryGetValue(key, out unit);
+                unitsBySymbol.TryGetValue(key, out unit);
                 return unit;
             }
         }
 
         public Unit AddBaseUnit(string symbol, string name, bool inherentPrefix = false)
         {
-            var newUnit = this.unitFactory.CreateUnit(this, 1, CreateNewBaseDimension(this.BaseUnits.Count()), symbol,
+            var newUnit = unitFactory.CreateUnit(this, 1, CreateNewBaseDimension(BaseUnits.Count()), symbol,
                 name,
                 inherentPrefix);
             EnsureUnitIsNotRegistered(newUnit);
@@ -77,7 +77,7 @@ namespace Physics
 
         public Unit AddDerivedUnit(string symbol, string name, Unit unit)
         {
-            var newUnit = this.unitFactory.CreateUnit(this, unit.Factor, unit.Dimension, symbol, name, false);
+            var newUnit = unitFactory.CreateUnit(this, unit.Factor, unit.Dimension, symbol, name, false);
             EnsureUnitIsNotRegistered(newUnit);
 
             RegisterKnownUnit(newUnit);
@@ -91,28 +91,28 @@ namespace Physics
             KnownUnit known;
             Unit coherent;
 
-            if (this.units.TryGetValue(Tuple.Create(factor, dimension), out known))
+            if (units.TryGetValue(Tuple.Create(factor, dimension), out known))
             {
                 return known;
             }
-            else if(factor.Equals(1) && this.coherentUnits.TryGetValue(dimension, out coherent))
+            else if(factor.Equals(1) && coherentUnits.TryGetValue(dimension, out coherent))
             {
                 return coherent;
             }
 
-            return this.unitFactory.CreateUnit(this, factor, dimension);
+            return unitFactory.CreateUnit(this, factor, dimension);
         }
 
         public Unit Parse(string unitExpression)
         {
-            return this.Interpretor.Parse(unitExpression);
+            return Interpretor.Parse(unitExpression);
         }
 
         public string Display(Unit unit)
         {
-            Check.UnitsAreFromSameSystem(this.NoUnit, unit);
+            Check.UnitsAreFromSameSystem(NoUnit, unit);
 
-            return this.Interpretor.ToString(unit);
+            return Interpretor.ToString(unit);
         }
 
         public Quantity MakeCoherent(Quantity quantity)
@@ -122,14 +122,14 @@ namespace Physics
             if (unit.IsCoherent) return quantity;
 
             Unit coherentUnit;
-            if (!this.coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
+            if (!coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
             {
-                lock (this.coherentUnits)
+                lock (coherentUnits)
                 {
-                    if (!this.coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
+                    if (!coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
                     {
                         coherentUnit = unit/unit.Factor;
-                        this.coherentUnits.Add(coherentUnit.Dimension, coherentUnit);
+                        coherentUnits.Add(coherentUnit.Dimension, coherentUnit);
                     }
                 }
             }
@@ -144,20 +144,20 @@ namespace Physics
 
             if (unit.Factor.Equals(1))
             {
-                this.coherentUnits.Add(unit.Dimension, unit);
+                coherentUnits.Add(unit.Dimension, unit);
             }
         }
 
         private void EnsureUnitIsNotRegistered(KnownUnit unit)
         {
-            if (this.units.Values.Any(u => u.Symbol == unit.Symbol))
+            if (units.Values.Any(u => u.Symbol == unit.Symbol))
             {
                 throw new InvalidOperationException(Messages.UnitSymbolAlreadyKnown.FormatWith(unit.Symbol));
             }
 
             KnownUnit collision;
 
-            if (this.units.TryGetValue(Tuple.Create(unit.Factor, unit.Dimension), out collision))
+            if (units.TryGetValue(Tuple.Create(unit.Factor, unit.Dimension), out collision))
             {
                 throw new InvalidOperationException(Messages.UnitAlreadyKnown.FormatWith(unit, collision));
             }
@@ -175,12 +175,12 @@ namespace Physics
 
         public IEnumerator<KnownUnit> GetEnumerator()
         {
-            return this.units.Values.GetEnumerator();
+            return units.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion

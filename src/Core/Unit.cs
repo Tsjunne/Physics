@@ -4,47 +4,47 @@ namespace Physics
 {
     public abstract class Unit : IEquatable<Unit>
     {
-        private readonly int hashCode;
+        private readonly int _hashCode;
 
         internal Unit(IUnitSystem system, double factor, Dimension dimension)
         {
             Check.Argument(dimension, nameof(dimension)).IsNotNull();
 
-            this.System = system;
-            this.Dimension = dimension;
-            this.Factor = factor;
+            System = system;
+            Dimension = dimension;
+            Factor = factor;
 
-            this.hashCode = GenerateHashCode();
+            _hashCode = GenerateHashCode();
         }
 
         public IUnitSystem System { get; }
         public double Factor { get; }
         public Dimension Dimension { get; }
-        public bool IsCoherent => this.Factor.Equals(1);
+        public bool IsCoherent => Factor.Equals(1);
 
         public bool Equals(Unit other)
         {
             if (ReferenceEquals(this, other)) return true;
             if ((object) other == null) return false;
 
-            return this.HasSameDimension(other)
-                   && this.Factor.Equals(other.Factor);
+            return HasSameDimension(other)
+                   && Factor.Equals(other.Factor);
         }
 
         public bool HasSameSystem(Unit other)
         {
-            return this.System == other.System;
+            return System == other.System;
         }
 
         public bool HasSameDimension(Unit other)
         {
-            return this.HasSameSystem(other)
-                   && this.Dimension.Equals(other.Dimension);
+            return HasSameSystem(other)
+                   && Dimension.Equals(other.Dimension);
         }
 
         public override int GetHashCode()
         {
-            return this.hashCode;
+            return _hashCode;
         }
 
         public override bool Equals(object obj)
@@ -108,14 +108,14 @@ namespace Physics
 
         public override string ToString()
         {
-            return this.System.Display(this);
+            return System.Display(this);
         }
 
         private int GenerateHashCode()
         {
             var hash = 17;
-            hash = hash*23 + this.Dimension.GetHashCode();
-            hash = hash*23 + this.Factor.GetHashCode();
+            hash = hash*23 + Dimension.GetHashCode();
+            hash = hash*23 + Factor.GetHashCode();
             return hash;
         }
     }

@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Physics.Systems;
 
 namespace Physics.Test.Performance
@@ -9,10 +9,9 @@ namespace Physics.Test.Performance
     /// I can conclude from these tests that it is best to define every unit you are ever gonna use, but not more.
     /// If performance is key, don't use the fully predefined SI system. Gain is marginal, but it's something :)
     /// </summary>
-    [TestClass]
     public class PerformanceTest 
     {
-        [TestMethod]
+        [Fact]
         public void CheckFullyDefinedSIPerformance()
         {
             var sytem = SI.System;
@@ -32,7 +31,7 @@ namespace Physics.Test.Performance
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckDefineWhatYouNeedSIPerformance()
         {
             var system = UnitSystemFactory.CreateSystem("SI");
@@ -56,7 +55,7 @@ namespace Physics.Test.Performance
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckOnlyBaseUnitSIPerformance()
         {
             var system = UnitSystemFactory.CreateSystem("SI");
@@ -76,7 +75,7 @@ namespace Physics.Test.Performance
             });
         }
 
-        [TestMethod]
+        [Fact]
         public void CheckOnlyBaseUnitAndIncoherentUnitsSIPerformance()
         {
             var system = UnitSystemFactory.CreateSystem("SI");

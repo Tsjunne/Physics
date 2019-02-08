@@ -49,7 +49,7 @@ namespace Physics
             {
                 if (argument == null || (argument is string && string.IsNullOrEmpty(argument as string)))
                 {
-                    throw new ArgumentNullException(this.paramName);
+                    throw new ArgumentNullException(paramName);
                 }
             }
         }

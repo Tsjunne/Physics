@@ -73,9 +73,9 @@ namespace Physics
 
         public UnitPrefix(string symbol, string name, int exponent)
         {
-            this.Symbol = symbol;
-            this.Name = name;
-            this.Factor = Math.Pow(10, exponent);
+            Symbol = symbol;
+            Name = name;
+            Factor = Math.Pow(10, exponent);
         }
 
         public string Symbol { get; }
@@ -84,7 +84,7 @@ namespace Physics
 
         public override string ToString()
         {
-            return this.Symbol;
+            return Symbol;
         }
 
         public static implicit operator double(UnitPrefix prefix)

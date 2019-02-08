@@ -1,43 +1,42 @@
 ﻿using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Physics.Test.Core
 {
-    [TestClass]
     public class WhenUsingSISystem : GivenSiSystem
     {
-        [TestMethod]
+        [Fact]
         public void ThenAll7BaseUnitsAreDefined()
         {
-            Assert.AreEqual(this.System.BaseUnits.Count(), 7);
-            Assert.IsNotNull(this.m);
-            Assert.IsNotNull(this.kg);
-            Assert.IsNotNull(this.s);
-            Assert.IsNotNull(this.A);
-            Assert.IsNotNull(this.K);
-            Assert.IsNotNull(this.mol);
-            Assert.IsNotNull(this.cd);
+            Assert.Equal(7, System.BaseUnits.Count());
+            Assert.NotNull(m);
+            Assert.NotNull(kg);
+            Assert.NotNull(s);
+            Assert.NotNull(A);
+            Assert.NotNull(K);
+            Assert.NotNull(mol);
+            Assert.NotNull(cd);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenSomeDerivedUnitsAreKnown()
         {
-            Assert.IsNotNull(this.Hz);
-            Assert.IsNotNull(this.N);
-            Assert.IsNotNull(this.Pa);
-            Assert.IsNotNull(this.J);
-            Assert.IsNotNull(this.W);
-            Assert.IsNotNull(this.C);
-            Assert.IsNotNull(this.V);
-            Assert.IsNotNull(this.F);
-            Assert.IsNotNull(this.Ω);
-            Assert.IsNotNull(this.S);
-            Assert.IsNotNull(this.Wb);
-            Assert.IsNotNull(this.T);
-            Assert.IsNotNull(this.H);
-            Assert.IsNotNull(this.lx);
-            Assert.IsNotNull(this.Sv);
-            Assert.IsNotNull(this.kat);
+            Assert.NotNull(Hz);
+            Assert.NotNull(N);
+            Assert.NotNull(Pa);
+            Assert.NotNull(J);
+            Assert.NotNull(W);
+            Assert.NotNull(C);
+            Assert.NotNull(V);
+            Assert.NotNull(F);
+            Assert.NotNull(Ω);
+            Assert.NotNull(S);
+            Assert.NotNull(Wb);
+            Assert.NotNull(T);
+            Assert.NotNull(H);
+            Assert.NotNull(lx);
+            Assert.NotNull(Sv);
+            Assert.NotNull(kat);
         }
     }
 }
