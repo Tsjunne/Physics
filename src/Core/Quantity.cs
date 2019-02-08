@@ -45,11 +45,6 @@ namespace Physics
             return 0;
         }
 
-        public Quantity ToCoherent()
-        {
-            return Unit.System.MakeCoherent(this);
-        }
-
         public Quantity Convert(Unit unit)
         {
             if (Unit == unit) return this;
@@ -202,6 +197,11 @@ namespace Physics
         public string ToString(string format, IFormatProvider formatProvider)
         {
             return "{0} {1}".FormatWith(Amount.ToString(format, formatProvider), Unit);
+        }
+
+        internal Quantity ToCoherent()
+        {
+            return Unit.System.MakeCoherent(this);
         }
 
         private int GenerateHashCode()

@@ -17,10 +17,10 @@ namespace Physics
             _hashCode = GenerateHashCode();
         }
 
-        public IUnitSystem System { get; }
-        public double Factor { get; }
-        public Dimension Dimension { get; }
-        public bool IsCoherent => Factor.Equals(1);
+        internal IUnitSystem System { get; }
+        internal double Factor { get; }
+        internal Dimension Dimension { get; }
+        internal bool IsCoherent => Factor.Equals(1);
 
         public bool Equals(Unit other)
         {
