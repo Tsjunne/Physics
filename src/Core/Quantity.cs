@@ -206,7 +206,13 @@ namespace Physics
 
         private int GenerateHashCode()
         {
-            return (_coherent.Unit, _coherent.Amount).GetHashCode();
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 23 + _coherent.Unit.GetHashCode();
+                hash = hash * 23 + _coherent.Amount.GetHashCode();
+                return hash;
+            }
         }
     }
 }

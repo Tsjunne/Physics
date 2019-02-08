@@ -113,7 +113,13 @@ namespace Physics
 
         private int GenerateHashCode()
         {
-            return (Dimension, Factor).GetHashCode();
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 23 + Dimension.GetHashCode();
+                hash = hash * 23 + Factor.GetHashCode();
+                return hash;
+            }
         }
     }
 }
