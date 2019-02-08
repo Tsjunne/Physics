@@ -43,11 +43,10 @@ namespace Physics
 
         private void DeriveInherentFactorAndBaseSymbol(string symbol)
         {
-            UnitPrefix inherentPrefix;
             var firstCharacter = symbol.Substring(0, 1);
             var baseSymbol = symbol.Substring(1);
 
-            if (string.IsNullOrEmpty(baseSymbol) || !UnitPrefix.Prefixes.TryGetValue(firstCharacter, out inherentPrefix))
+            if (string.IsNullOrEmpty(baseSymbol) || !UnitPrefix.Prefixes.TryGetValue(firstCharacter, out UnitPrefix inherentPrefix))
             {
                 throw new ArgumentException(Messages.InherentPrefixInvalid.FormatWith(symbol));
             }

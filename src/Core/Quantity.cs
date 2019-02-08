@@ -21,7 +21,7 @@ namespace Physics
         {
             Amount = amount;
             Unit = unit;
-            this._coherent = coherent;
+            _coherent = coherent;
 
             _hashCode = GenerateHashCode();
         }
@@ -31,7 +31,7 @@ namespace Physics
 
         public bool Equals(Quantity other)
         {
-            if (ReferenceEquals(other, null)) return false;
+            if (other is null) return false;
 
             return _coherent.Unit == other._coherent.Unit
                    && _coherent.Amount == other._coherent.Amount;
@@ -71,7 +71,7 @@ namespace Physics
         public static bool operator ==(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return true;
-            if (ReferenceEquals(quantity1, null)) return false;
+            if (quantity1 is null) return false;
 
             return quantity1.Equals(quantity2);
         }
@@ -84,8 +84,8 @@ namespace Physics
         public static bool operator >(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return false;
-            if (ReferenceEquals(quantity1, null)) return false;
-            if (ReferenceEquals(quantity2, null)) return true;
+            if (quantity1 is null) return false;
+            if (quantity2 is null) return true;
 
             return quantity1._coherent.Amount > quantity2._coherent.Amount && quantity1._coherent.Unit == quantity2._coherent.Unit;
         }
@@ -93,8 +93,8 @@ namespace Physics
         public static bool operator <(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return false;
-            if (ReferenceEquals(quantity1, null)) return true;
-            if (ReferenceEquals(quantity2, null)) return false;
+            if (quantity1 is null) return true;
+            if (quantity2 is null) return false;
 
             return quantity1._coherent.Amount < quantity2._coherent.Amount && quantity1._coherent.Unit == quantity2._coherent.Unit;
         }
@@ -102,8 +102,8 @@ namespace Physics
         public static bool operator >=(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return true;
-            if (ReferenceEquals(quantity1, null)) return false;
-            if (ReferenceEquals(quantity2, null)) return true;
+            if (quantity1 is null) return false;
+            if (quantity2 is null) return true;
 
             return quantity1._coherent.Amount >= quantity2._coherent.Amount && quantity1._coherent.Unit == quantity2._coherent.Unit;
         }
@@ -111,8 +111,8 @@ namespace Physics
         public static bool operator <=(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return true;
-            if (ReferenceEquals(quantity1, null)) return true;
-            if (ReferenceEquals(quantity2, null)) return false;
+            if (quantity1 is null) return true;
+            if (quantity2 is null) return false;
 
             return quantity1._coherent.Amount <= quantity2._coherent.Amount && quantity1._coherent.Unit == quantity2._coherent.Unit;
         }
@@ -206,10 +206,7 @@ namespace Physics
 
         private int GenerateHashCode()
         {
-            var hash = 17;
-            hash = hash*23 + _coherent.Unit.GetHashCode();
-            hash = hash*23 + _coherent.Amount.GetHashCode();
-            return hash;
+            return (_coherent.Unit, _coherent.Amount).GetHashCode();
         }
     }
 }
