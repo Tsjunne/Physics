@@ -1,43 +1,42 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Physics.Test.Core
 {
-    [TestClass]
     public class WhenCalculatingWithUnits : GivenSiSystem
     {
-        [TestMethod]
+        [Fact]
         public void ThenUnitsCanBeMultiplied()
         {
-            var result = this.m*this.s;
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Dimension.Count(), Math.Max(this.m.Dimension.Count(), this.s.Dimension.Count()));
+            var result = m*s;
+            Assert.NotNull(result);
+            Assert.Equal(result.Dimension.Count(), Math.Max(m.Dimension.Count(), s.Dimension.Count()));
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenUnitsCanBeDivided()
         {
-            var result = this.m/this.s;
-            Assert.IsNotNull(result);
-            Assert.AreEqual(result.Dimension.Count(), Math.Max(this.m.Dimension.Count(), this.s.Dimension.Count()));
+            var result = m/s;
+            Assert.NotNull(result);
+            Assert.Equal(result.Dimension.Count(), Math.Max(m.Dimension.Count(), s.Dimension.Count()));
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenMultipicationCanBeRevertedWithDivision()
         {
-            var mPerS = this.m/this.s;
-            var m = mPerS*this.s;
+            var mPerS = this.m/s;
+            var m = mPerS*s;
 
-            Assert.AreEqual(m, this.m);
+            Assert.Equal(m, this.m);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenKnownUnitsAreReturnedWhenPossible()
         {
-            var result = this.kg*this.m*(this.s ^ -2);
+            var result = kg*m*(s ^ -2);
 
-            Assert.IsTrue(ReferenceEquals(result, this.N));
+            Assert.True(ReferenceEquals(result, N));
         }
     }
 }

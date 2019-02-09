@@ -1,84 +1,83 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Physics.Test.Presentation
 {
-    [TestClass]
     public class WhenParsingUnits : GivenSiSystem
     {
-        [TestMethod]
+        [Fact]
         public void ThenUnitsWithOutDenominatorCanBeParsed()
         {
-            var result = this.System.Parse("kW h");
-            var expected = UnitPrefix.k*this.W*this.h;
-            Assert.AreEqual(result, expected);
+            var result = System.Parse("kW h");
+            var expected = UnitPrefix.k*W*h;
+            Assert.Equal(result, expected);
 
-            result = this.System.Parse("kW×h");
-            Assert.AreEqual(result, expected);
+            result = System.Parse("kW×h");
+            Assert.Equal(result, expected);
 
-            result = this.System.Parse("kW × h");
-            Assert.AreEqual(result, expected);
+            result = System.Parse("kW × h");
+            Assert.Equal(result, expected);
 
-            result = this.System.Parse("kW·h");
-            Assert.AreEqual(result, expected);
+            result = System.Parse("kW·h");
+            Assert.Equal(result, expected);
 
-            result = this.System.Parse("kW · h");
-            Assert.AreEqual(result, expected);
+            result = System.Parse("kW · h");
+            Assert.Equal(result, expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenUnitsWithDenominatorCanBeParsed()
         {
-            var result = this.System.Parse("m/s");
-            var expected = this.m/this.s;
-            Assert.AreEqual(result, expected);
+            var result = System.Parse("m/s");
+            var expected = m/s;
+            Assert.Equal(result, expected);
 
-            result = this.System.Parse("m / s");
-            Assert.AreEqual(result, expected);
+            result = System.Parse("m / s");
+            Assert.Equal(result, expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenUnitsWithExponentCanBeParsed()
         {
-            var result = this.System.Parse("J/m^3");
-            var expected = this.J/(this.m ^ 3);
-            Assert.AreEqual(result, expected);
+            var result = System.Parse("J/m^3");
+            var expected = J/(m ^ 3);
+            Assert.Equal(result, expected);
 
-            result = this.System.Parse("J / m^3");
-            Assert.AreEqual(result, expected);
+            result = System.Parse("J / m^3");
+            Assert.Equal(result, expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenUnitsWithNegativeExponentCanBeParsed()
         {
-            var result = this.System.Parse("J m^-3");
-            var expected = this.J*(this.m ^ -3);
+            var result = System.Parse("J m^-3");
+            var expected = J*(m ^ -3);
 
-            Assert.AreEqual(result, expected);
+            Assert.Equal(result, expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenMilligramsAreParsedCorrectly()
         {
-            var result = this.System.Parse("mg");
-            var expected = this.kg/1000000;
+            var result = System.Parse("mg");
+            var expected = kg/1000000;
 
-            Assert.AreEqual(result, expected);
+            Assert.Equal(result, expected);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenGramsAreParsedCorrectly()
         {
-            var result = this.System.Parse("g");
-            var expected = this.kg/1000;
+            var result = System.Parse("g");
+            var expected = kg/1000;
 
-            Assert.AreEqual(result, expected);
+            Assert.Equal(result, expected);
         }
 
-        [TestMethod, ExpectedException(typeof (FormatException))]
+        [Fact]
         public void ThenKiloKilogramsThrowsAFormatException()
         {
-            var result = this.System.Parse("kkg");
+            Assert.Throws<FormatException>(() => System.Parse("kkg"));
         }
     }
 }

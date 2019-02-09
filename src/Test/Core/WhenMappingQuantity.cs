@@ -1,32 +1,30 @@
 ﻿using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
-using System.Web.Script.Serialization;
 using System.Xml;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 using Newtonsoft.Json;
 using Physics.Serialization;
 
 namespace Physics.Test.Core
 {
-    [TestClass]
     public class WhenMappingQuantity : GivenSiSystem
     {
-        [TestMethod]
+        [Fact]
         public void ThenCanMapToInfoAndBack()
         {
-            var quantity = new Quantity(100, this.J/(this.m ^ 3));
+            var quantity = new Quantity(100, J/(m ^ 3));
 
             var info = quantity.ToInfo();
-            var result = this.System.FromInfo(info);
+            var result = System.FromInfo(info);
 
-            Assert.AreEqual(quantity, result);
+            Assert.Equal(quantity, result);
         }
 
-        [TestMethod]
+        [Fact]
         public void ThenCanSerializeAndDeserializeUsingDataContractSerializer()
         {
-            var quantity = new Quantity(100, this.J/(this.m ^ 3));
+            var quantity = new Quantity(100, J/(m ^ 3));
 
             var info = quantity.ToInfo();
 
@@ -44,40 +42,24 @@ namespace Physics.Test.Core
                 deserializedInfo = (QuantityInfo) serializer.ReadObject(reader);
             }
 
-            var result = this.System.FromInfo(deserializedInfo);
+            var result = System.FromInfo(deserializedInfo);
 
-            Assert.AreEqual(quantity, result);
+            Assert.Equal(quantity, result);
         }
-
-        [TestMethod]
-        public void ThenCanSerializeAndDeserializeUsingJavaScriptSerializer()
-        {
-            var quantity = new Quantity(100, this.J/(this.m ^ 3));
-
-            var info = quantity.ToInfo();
-
-            var serializer = new JavaScriptSerializer();
-            var json = serializer.Serialize(info);
-            var deserializedInfo = serializer.Deserialize<QuantityInfo>(json);
-
-            var result = this.System.FromInfo(deserializedInfo);
-
-            Assert.AreEqual(quantity, result);
-        }
-
-        [TestMethod]
+        
+        [Fact]
         public void ThenCanSerializeAndDeserializeUsingJsonNet()
         {
-            var quantity = new Quantity(100, this.J/(this.m ^ 3));
+            var quantity = new Quantity(100, J/(m ^ 3));
 
             var info = quantity.ToInfo();
 
             var json = JsonConvert.SerializeObject(info);
             var deserializedInfo = JsonConvert.DeserializeObject<QuantityInfo>(json);
 
-            var result = this.System.FromInfo(deserializedInfo);
+            var result = System.FromInfo(deserializedInfo);
 
-            Assert.AreEqual(quantity, result);
+            Assert.Equal(quantity, result);
         }
     }
 }

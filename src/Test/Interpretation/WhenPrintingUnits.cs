@@ -1,19 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Xunit;
 
 namespace Physics.Test.Presentation
 {
-    [TestClass]
     public class WhenPrintingUnits : GivenSiSystem
     {
-        [TestMethod]
+        [Fact]
         public void ThenUnitCanBePrintedAndReparsed()
         {
-            var expected = this.kg*this.m*(this.s ^ -2);
-            var display = this.System.Display(expected);
-            var result = this.System.Parse(display);
+            var expected = kg*m*(s ^ -2);
+            var display = System.Display(expected);
+            var result = System.Parse(display);
 
-            Assert.AreEqual(expected, result);
-            Assert.AreEqual("m kg / s^2", display);
+            Assert.Equal(expected, result);
+            Assert.Equal("m kg / s^2", display);
         }
     }
 }

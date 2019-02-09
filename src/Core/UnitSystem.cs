@@ -8,13 +8,13 @@ namespace Physics
 {
     internal class UnitSystem : IUnitSystem
     {
-        private readonly Dictionary<Dimension, KnownUnit> baseUnits;
-        private readonly Dictionary<Dimension, Unit> coherentUnits;
-        private readonly IUnitDialect dialect;
-        private readonly IUnitFactory unitFactory;
-        private readonly Dictionary<Tuple<double, Dimension>, KnownUnit> units;
-        private readonly Dictionary<string, KnownUnit> unitsBySymbol;
-        private UnitInterpretor unitInterpretor;
+        private readonly Dictionary<Dimension, KnownUnit> _baseUnits;
+        private readonly Dictionary<Dimension, Unit> _coherentUnits;
+        private readonly IUnitDialect _dialect;
+        private readonly IUnitFactory _unitFactory;
+        private readonly Dictionary<Tuple<double, Dimension>, KnownUnit> _units;
+        private readonly Dictionary<string, KnownUnit> _unitsBySymbol;
+        private UnitInterpretor _unitInterpretor;
 
         public UnitSystem(string name)
             : this(name, new UnitFactory(), new UnitDialect())
@@ -32,42 +32,41 @@ namespace Physics
             Check.Argument(unitFactory, nameof(unitFactory)).IsNotNull();
             Check.Argument(dialect, nameof(dialect)).IsNotNull();
 
-            this.unitFactory = unitFactory;
-            this.dialect = dialect;
-            this.Name = name;
-            this.baseUnits = new Dictionary<Dimension, KnownUnit>();
-            this.coherentUnits = new Dictionary<Dimension, Unit>();
-            this.units = new Dictionary<Tuple<double, Dimension>, KnownUnit>();
-            this.unitsBySymbol = new Dictionary<string, KnownUnit>();
-            this.NoUnit = new DerivedUnit(this, 1, Dimension.DimensionLess);
+            _unitFactory = unitFactory;
+            _dialect = dialect;
+            Name = name;
+            _baseUnits = new Dictionary<Dimension, KnownUnit>();
+            _coherentUnits = new Dictionary<Dimension, Unit>();
+            _units = new Dictionary<Tuple<double, Dimension>, KnownUnit>();
+            _unitsBySymbol = new Dictionary<string, KnownUnit>();
+            NoUnit = new DerivedUnit(this, 1, Dimension.DimensionLess);
         }
 
         private UnitInterpretor Interpretor
-            => this.unitInterpretor ?? (this.unitInterpretor = new UnitInterpretor(this, dialect));
+            => _unitInterpretor ?? (_unitInterpretor = new UnitInterpretor(this, _dialect));
 
         public string Name { get; }
         public int NumberOfDimensions { get; private set; }
         public Unit NoUnit { get; }
-        public IEnumerable<KnownUnit> BaseUnits => this.baseUnits.Values;
+        public IEnumerable<KnownUnit> BaseUnits => _baseUnits.Values;
 
         public KnownUnit this[string key]
         {
             get
             {
-                KnownUnit unit;
-                this.unitsBySymbol.TryGetValue(key, out unit);
+                _unitsBySymbol.TryGetValue(key, out KnownUnit unit);
                 return unit;
             }
         }
 
         public Unit AddBaseUnit(string symbol, string name, bool inherentPrefix = false)
         {
-            var newUnit = this.unitFactory.CreateUnit(this, 1, CreateNewBaseDimension(this.BaseUnits.Count()), symbol,
+            var newUnit = _unitFactory.CreateUnit(this, 1, CreateNewBaseDimension(BaseUnits.Count()), symbol,
                 name,
                 inherentPrefix);
             EnsureUnitIsNotRegistered(newUnit);
 
-            baseUnits.Add(newUnit.Dimension, newUnit);
+            _baseUnits.Add(newUnit.Dimension, newUnit);
             NumberOfDimensions++;
 
             RegisterKnownUnit(newUnit);
@@ -77,7 +76,7 @@ namespace Physics
 
         public Unit AddDerivedUnit(string symbol, string name, Unit unit)
         {
-            var newUnit = this.unitFactory.CreateUnit(this, unit.Factor, unit.Dimension, symbol, name, false);
+            var newUnit = _unitFactory.CreateUnit(this, unit.Factor, unit.Dimension, symbol, name, false);
             EnsureUnitIsNotRegistered(newUnit);
 
             RegisterKnownUnit(newUnit);
@@ -88,31 +87,29 @@ namespace Physics
         public Unit CreateUnit(double factor, Dimension dimension)
         {
             // Prefer returning a known or coherent unit
-            KnownUnit known;
-            Unit coherent;
 
-            if (this.units.TryGetValue(Tuple.Create(factor, dimension), out known))
+            if (_units.TryGetValue(Tuple.Create(factor, dimension), out KnownUnit known))
             {
                 return known;
             }
-            else if(factor.Equals(1) && this.coherentUnits.TryGetValue(dimension, out coherent))
+            else if (factor.Equals(1) && _coherentUnits.TryGetValue(dimension, out Unit coherent))
             {
                 return coherent;
             }
 
-            return this.unitFactory.CreateUnit(this, factor, dimension);
+            return _unitFactory.CreateUnit(this, factor, dimension);
         }
 
         public Unit Parse(string unitExpression)
         {
-            return this.Interpretor.Parse(unitExpression);
+            return Interpretor.Parse(unitExpression);
         }
 
         public string Display(Unit unit)
         {
-            Check.UnitsAreFromSameSystem(this.NoUnit, unit);
+            Check.UnitsAreFromSameSystem(NoUnit, unit);
 
-            return this.Interpretor.ToString(unit);
+            return Interpretor.ToString(unit);
         }
 
         public Quantity MakeCoherent(Quantity quantity)
@@ -121,15 +118,14 @@ namespace Physics
 
             if (unit.IsCoherent) return quantity;
 
-            Unit coherentUnit;
-            if (!this.coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
+            if (!_coherentUnits.TryGetValue(unit.Dimension, out Unit coherentUnit))
             {
-                lock (this.coherentUnits)
+                lock (_coherentUnits)
                 {
-                    if (!this.coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
+                    if (!_coherentUnits.TryGetValue(unit.Dimension, out coherentUnit))
                     {
-                        coherentUnit = unit/unit.Factor;
-                        this.coherentUnits.Add(coherentUnit.Dimension, coherentUnit);
+                        coherentUnit = unit / unit.Factor;
+                        _coherentUnits.Add(coherentUnit.Dimension, coherentUnit);
                     }
                 }
             }
@@ -139,25 +135,23 @@ namespace Physics
 
         private void RegisterKnownUnit(KnownUnit unit)
         {
-            units.Add(Tuple.Create(unit.Factor, unit.Dimension), unit);
-            unitsBySymbol.Add(unit.Symbol, unit);
+            _units.Add(Tuple.Create(unit.Factor, unit.Dimension), unit);
+            _unitsBySymbol.Add(unit.Symbol, unit);
 
             if (unit.Factor.Equals(1))
             {
-                this.coherentUnits.Add(unit.Dimension, unit);
+                _coherentUnits.Add(unit.Dimension, unit);
             }
         }
 
         private void EnsureUnitIsNotRegistered(KnownUnit unit)
         {
-            if (this.units.Values.Any(u => u.Symbol == unit.Symbol))
+            if (_units.Values.Any(u => u.Symbol == unit.Symbol))
             {
                 throw new InvalidOperationException(Messages.UnitSymbolAlreadyKnown.FormatWith(unit.Symbol));
             }
 
-            KnownUnit collision;
-
-            if (this.units.TryGetValue(Tuple.Create(unit.Factor, unit.Dimension), out collision))
+            if (_units.TryGetValue(Tuple.Create(unit.Factor, unit.Dimension), out KnownUnit collision))
             {
                 throw new InvalidOperationException(Messages.UnitAlreadyKnown.FormatWith(unit, collision));
             }
@@ -175,12 +169,12 @@ namespace Physics
 
         public IEnumerator<KnownUnit> GetEnumerator()
         {
-            return this.units.Values.GetEnumerator();
+            return _units.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this.GetEnumerator();
+            return GetEnumerator();
         }
 
         #endregion

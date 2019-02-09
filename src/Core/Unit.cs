@@ -4,47 +4,47 @@ namespace Physics
 {
     public abstract class Unit : IEquatable<Unit>
     {
-        private readonly int hashCode;
+        private readonly int _hashCode;
 
         internal Unit(IUnitSystem system, double factor, Dimension dimension)
         {
             Check.Argument(dimension, nameof(dimension)).IsNotNull();
 
-            this.System = system;
-            this.Dimension = dimension;
-            this.Factor = factor;
+            System = system;
+            Dimension = dimension;
+            Factor = factor;
 
-            this.hashCode = GenerateHashCode();
+            _hashCode = GenerateHashCode();
         }
 
-        public IUnitSystem System { get; }
-        public double Factor { get; }
-        public Dimension Dimension { get; }
-        public bool IsCoherent => this.Factor.Equals(1);
+        internal IUnitSystem System { get; }
+        internal double Factor { get; }
+        internal Dimension Dimension { get; }
+        internal bool IsCoherent => Factor.Equals(1);
 
         public bool Equals(Unit other)
         {
             if (ReferenceEquals(this, other)) return true;
-            if ((object) other == null) return false;
+            if (other is null) return false;
 
-            return this.HasSameDimension(other)
-                   && this.Factor.Equals(other.Factor);
+            return HasSameDimension(other)
+                   && Factor.Equals(other.Factor);
         }
 
         public bool HasSameSystem(Unit other)
         {
-            return this.System == other.System;
+            return System == other.System;
         }
 
         public bool HasSameDimension(Unit other)
         {
-            return this.HasSameSystem(other)
-                   && this.Dimension.Equals(other.Dimension);
+            return HasSameSystem(other)
+                   && Dimension.Equals(other.Dimension);
         }
 
         public override int GetHashCode()
         {
-            return this.hashCode;
+            return _hashCode;
         }
 
         public override bool Equals(object obj)
@@ -55,7 +55,7 @@ namespace Physics
         public static bool operator ==(Unit unit1, Unit unit2)
         {
             if (ReferenceEquals(unit1, unit2)) return true;
-            if (((object) unit1 == null) || ((object) unit2 == null)) return false;
+            if ((unit1 is null) || (unit2 is null)) return false;
 
             return unit1.HasSameDimension(unit2)
                    && unit1.Factor.Equals(unit2.Factor);
@@ -108,15 +108,18 @@ namespace Physics
 
         public override string ToString()
         {
-            return this.System.Display(this);
+            return System.Display(this);
         }
 
         private int GenerateHashCode()
         {
-            var hash = 17;
-            hash = hash*23 + this.Dimension.GetHashCode();
-            hash = hash*23 + this.Factor.GetHashCode();
-            return hash;
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 23 + Dimension.GetHashCode();
+                hash = hash * 23 + Factor.GetHashCode();
+                return hash;
+            }
         }
     }
 }

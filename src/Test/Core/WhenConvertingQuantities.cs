@@ -1,26 +1,25 @@
 ﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Xunit;
 
 namespace Physics.Test.Core
 {
-    [TestClass]
     public class WhenConvertingQuantities : GivenSiSystem
     {
-        [TestMethod]
+        [Fact]
         public void ThenConvertedQuantitiesAreEquivalent()
         {
-            var kWh = this.System.AddDerivedUnit("kWh", "kilowatt hour", UnitPrefix.k*this.W*this.h);
-            var quantity = new Quantity(100, this.J);
+            var kWh = System.AddDerivedUnit("kWh", "kilowatt hour", UnitPrefix.k*W*h);
+            var quantity = new Quantity(100, J);
             var result = quantity.Convert(kWh);
 
-            Assert.AreEqual(quantity, result);
+            Assert.Equal(quantity, result);
         }
 
-        [TestMethod, ExpectedException(typeof (InvalidOperationException))]
+        [Fact]
         public void ThenConvertingToInequivalentUnitsThrowsException()
         {
-            var quantity = new Quantity(100, this.J);
-            var result = quantity.Convert(this.W);
+            var quantity = new Quantity(100, J);
+            Assert.Throws<InvalidOperationException>(() => quantity.Convert(W));
         }
     }
 }

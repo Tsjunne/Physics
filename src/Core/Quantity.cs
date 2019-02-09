@@ -5,25 +5,25 @@ namespace Physics
 {
     public class Quantity : IEquatable<Quantity>, IComparable<Quantity>
     {
-        private readonly Quantity coherent;
-        private readonly int hashCode;
+        private readonly Quantity _coherent;
+        private readonly int _hashCode;
 
         public Quantity(double amount, Unit unit)
         {
-            this.Amount = amount;
-            this.Unit = unit;
-            this.coherent = this.ToCoherent();
+            Amount = amount;
+            Unit = unit;
+            _coherent = ToCoherent();
 
-            this.hashCode = this.GenerateHashCode();
+            _hashCode = GenerateHashCode();
         }
 
         private Quantity(double amount, Unit unit, Quantity coherent)
         {
-            this.Amount = amount;
-            this.Unit = unit;
-            this.coherent = coherent;
+            Amount = amount;
+            Unit = unit;
+            _coherent = coherent;
 
-            this.hashCode = this.GenerateHashCode();
+            _hashCode = GenerateHashCode();
         }
 
         public double Amount { get; }
@@ -31,10 +31,10 @@ namespace Physics
 
         public bool Equals(Quantity other)
         {
-            if (ReferenceEquals(other, null)) return false;
+            if (other is null) return false;
 
-            return this.coherent.Unit == other.coherent.Unit
-                   && this.coherent.Amount == other.coherent.Amount;
+            return _coherent.Unit == other._coherent.Unit
+                   && _coherent.Amount == other._coherent.Amount;
         }
 
         public int CompareTo(Quantity other)
@@ -45,33 +45,28 @@ namespace Physics
             return 0;
         }
 
-        public Quantity ToCoherent()
-        {
-            return this.Unit.System.MakeCoherent(this);
-        }
-
         public Quantity Convert(Unit unit)
         {
-            if (this.Unit == unit) return this;
+            if (Unit == unit) return this;
 
-            Check.UnitsAreSameDimension(this.Unit, unit);
-            return new Quantity(this.coherent.Amount/unit.Factor, unit, this.coherent);
+            Check.UnitsAreSameDimension(Unit, unit);
+            return new Quantity(_coherent.Amount/unit.Factor, unit, _coherent);
         }
 
         public override bool Equals(object obj)
         {
-            return this.Equals(obj as Quantity);
+            return Equals(obj as Quantity);
         }
 
         public override int GetHashCode()
         {
-            return this.hashCode;
+            return _hashCode;
         }
         
         public static bool operator ==(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return true;
-            if (ReferenceEquals(quantity1, null)) return false;
+            if (quantity1 is null) return false;
 
             return quantity1.Equals(quantity2);
         }
@@ -84,84 +79,84 @@ namespace Physics
         public static bool operator >(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return false;
-            if (ReferenceEquals(quantity1, null)) return false;
-            if (ReferenceEquals(quantity2, null)) return true;
+            if (quantity1 is null) return false;
+            if (quantity2 is null) return true;
 
-            return quantity1.coherent.Amount > quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
+            return quantity1._coherent.Amount > quantity2._coherent.Amount && quantity1._coherent.Unit == quantity2._coherent.Unit;
         }
 
         public static bool operator <(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return false;
-            if (ReferenceEquals(quantity1, null)) return true;
-            if (ReferenceEquals(quantity2, null)) return false;
+            if (quantity1 is null) return true;
+            if (quantity2 is null) return false;
 
-            return quantity1.coherent.Amount < quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
+            return quantity1._coherent.Amount < quantity2._coherent.Amount && quantity1._coherent.Unit == quantity2._coherent.Unit;
         }
 
         public static bool operator >=(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return true;
-            if (ReferenceEquals(quantity1, null)) return false;
-            if (ReferenceEquals(quantity2, null)) return true;
+            if (quantity1 is null) return false;
+            if (quantity2 is null) return true;
 
-            return quantity1.coherent.Amount >= quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
+            return quantity1._coherent.Amount >= quantity2._coherent.Amount && quantity1._coherent.Unit == quantity2._coherent.Unit;
         }
 
         public static bool operator <=(Quantity quantity1, Quantity quantity2)
         {
             if (ReferenceEquals(quantity1, quantity2)) return true;
-            if (ReferenceEquals(quantity1, null)) return true;
-            if (ReferenceEquals(quantity2, null)) return false;
+            if (quantity1 is null) return true;
+            if (quantity2 is null) return false;
 
-            return quantity1.coherent.Amount <= quantity2.coherent.Amount && quantity1.coherent.Unit == quantity2.coherent.Unit;
+            return quantity1._coherent.Amount <= quantity2._coherent.Amount && quantity1._coherent.Unit == quantity2._coherent.Unit;
         }
 
         public static Quantity operator +(Quantity q1, Quantity q2)
         {
             Check.UnitsAreSameDimension(q1.Unit, q2.Unit);
-            return new Quantity(q1.coherent.Amount + q2.coherent.Amount, q1.coherent.Unit);
+            return new Quantity(q1._coherent.Amount + q2._coherent.Amount, q1._coherent.Unit);
         }
 
         public static Quantity operator -(Quantity q1, Quantity q2)
         {
             Check.UnitsAreSameDimension(q1.Unit, q2.Unit);
-            return new Quantity(q1.coherent.Amount - q2.coherent.Amount, q1.coherent.Unit);
+            return new Quantity(q1._coherent.Amount - q2._coherent.Amount, q1._coherent.Unit);
         }
 
         public static Quantity operator *(Quantity q1, Quantity q2)
         {
-            return new Quantity(q1.coherent.Amount*q2.coherent.Amount, q1.coherent.Unit*q2.coherent.Unit);
+            return new Quantity(q1._coherent.Amount*q2._coherent.Amount, q1._coherent.Unit*q2._coherent.Unit);
         }
 
         public static Quantity operator *(Quantity q, double factor)
         {
-            return new Quantity(q.coherent.Amount*factor, q.coherent.Unit);
+            return new Quantity(q._coherent.Amount*factor, q._coherent.Unit);
         }
 
         public static Quantity operator *(double factor, Quantity q)
         {
-            return new Quantity(q.coherent.Amount*factor, q.coherent.Unit);
+            return new Quantity(q._coherent.Amount*factor, q._coherent.Unit);
         }
 
         public static Quantity operator /(Quantity q1, Quantity q2)
         {
-            return new Quantity(q1.coherent.Amount/q2.coherent.Amount, q1.coherent.Unit/q2.coherent.Unit);
+            return new Quantity(q1._coherent.Amount/q2._coherent.Amount, q1._coherent.Unit/q2._coherent.Unit);
         }
 
         public static Quantity operator /(Quantity q, double factor)
         {
-            return new Quantity(q.coherent.Amount/factor, q.coherent.Unit);
+            return new Quantity(q._coherent.Amount/factor, q._coherent.Unit);
         }
 
         public static Quantity operator /(double factor, Quantity q)
         {
-            return new Quantity(q.coherent.Amount/factor, q.coherent.Unit);
+            return new Quantity(q._coherent.Amount/factor, q._coherent.Unit);
         }
 
         public static Quantity operator ^(Quantity q, int exponent)
         {
-            return new Quantity(Math.Pow(q.coherent.Amount, exponent), q.coherent.Unit ^ exponent);
+            return new Quantity(Math.Pow(q._coherent.Amount, exponent), q._coherent.Unit ^ exponent);
         }
 
         public override string ToString()
@@ -181,35 +176,43 @@ namespace Physics
 
         public string ToString(Unit unit)
         {
-            return this.Convert(unit).ToString(null, NumberFormatInfo.CurrentInfo);
+            return Convert(unit).ToString(null, NumberFormatInfo.CurrentInfo);
         }
 
         public string ToString(string format, Unit unit)
         {
-            return this.Convert(unit).ToString(format, NumberFormatInfo.CurrentInfo);
+            return Convert(unit).ToString(format, NumberFormatInfo.CurrentInfo);
         }
 
         public string ToString(IFormatProvider formatProvider, Unit unit)
         {
-            return this.Convert(unit).ToString(null, formatProvider);
+            return Convert(unit).ToString(null, formatProvider);
         }
 
         public string ToString(string format, IFormatProvider formatProvider, Unit unit)
         {
-            return this.Convert(unit).ToString(format, formatProvider);
+            return Convert(unit).ToString(format, formatProvider);
         }
 
         public string ToString(string format, IFormatProvider formatProvider)
         {
-            return "{0} {1}".FormatWith(this.Amount.ToString(format, formatProvider), this.Unit);
+            return "{0} {1}".FormatWith(Amount.ToString(format, formatProvider), Unit);
+        }
+
+        internal Quantity ToCoherent()
+        {
+            return Unit.System.MakeCoherent(this);
         }
 
         private int GenerateHashCode()
         {
-            var hash = 17;
-            hash = hash*23 + this.coherent.Unit.GetHashCode();
-            hash = hash*23 + this.coherent.Amount.GetHashCode();
-            return hash;
+            unchecked
+            {
+                var hash = 17;
+                hash = hash * 23 + _coherent.Unit.GetHashCode();
+                hash = hash * 23 + _coherent.Amount.GetHashCode();
+                return hash;
+            }
         }
     }
 }

@@ -36,20 +36,20 @@ namespace Physics
 
         internal class ArgumentCheck<T>
         {
-            private readonly T argument;
-            private readonly string paramName;
+            private readonly T _argument;
+            private readonly string _paramName;
 
             public ArgumentCheck(T argument, string paramName)
             {
-                this.argument = argument;
-                this.paramName = paramName;
+                _argument = argument;
+                _paramName = paramName;
             }
 
             public void IsNotNull()
             {
-                if (argument == null || (argument is string && string.IsNullOrEmpty(argument as string)))
+                if (_argument == null || (_argument is string && string.IsNullOrEmpty(_argument as string)))
                 {
-                    throw new ArgumentNullException(this.paramName);
+                    throw new ArgumentNullException(_paramName);
                 }
             }
         }

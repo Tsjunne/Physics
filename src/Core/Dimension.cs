@@ -3,7 +3,6 @@ using System.Linq;
 
 namespace Physics
 {
-    [Serializable]
     public sealed class Dimension : ImmutableCollection<int>
     {
         internal Dimension(params int[] exponents)

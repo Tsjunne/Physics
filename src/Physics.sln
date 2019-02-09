@@ -1,25 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2046
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics.Test", "Test\Physics.Test.csproj", "{9E859B92-F082-40EF-8433-D0E3911B5A03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Physics.Test", "Test\Physics.Test.csproj", "{9E859B92-F082-40EF-8433-D0E3911B5A03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Physics", "Core\Physics.csproj", "{A9CE547B-9829-4AD4-92FD-2117F0A48407}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{FFD986AA-38E4-406B-B0F3-DA14534DCF25}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-		nuspec.xsd = nuspec.xsd
-		packages\repositories.config = packages\repositories.config
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{00658F11-2A94-4D41-9AB4-17D862ED7B1F}"
-	ProjectSection(SolutionItems) = preProject
-		Default.testsettings = Default.testsettings
-	EndProjectSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Physics", "Core\Physics.csproj", "{A9CE547B-9829-4AD4-92FD-2117F0A48407}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,5 +24,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2B4CB172-6354-46D4-91B6-A7D3BD47928F}
 	EndGlobalSection
 EndGlobal

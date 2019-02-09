@@ -7,7 +7,7 @@ namespace Physics
         internal KnownUnit(IUnitSystem system, double factor, Dimension dimension, string symbol, string name)
             : this(system, factor, dimension, symbol, name, false)
         {
-            this.Symbol = symbol;
+            Symbol = symbol;
         }
 
         internal KnownUnit(IUnitSystem system, double factor, Dimension dimension, string symbol, string name,
@@ -17,17 +17,17 @@ namespace Physics
             Check.Argument(symbol, nameof(symbol)).IsNotNull();
             Check.Argument(name, nameof(name)).IsNotNull();
 
-            this.Symbol = symbol;
-            this.Name = name;
+            Symbol = symbol;
+            Name = name;
 
             if (inherentPrefix)
             {
-                this.DeriveInherentFactorAndBaseSymbol(symbol);
+                DeriveInherentFactorAndBaseSymbol(symbol);
             }
             else
             {
-                this.InherentFactor = 1;
-                this.BaseSymbol = symbol;
+                InherentFactor = 1;
+                BaseSymbol = symbol;
             }
         }
 
@@ -38,22 +38,21 @@ namespace Physics
 
         public override string ToString()
         {
-            return this.Symbol;
+            return Symbol;
         }
 
         private void DeriveInherentFactorAndBaseSymbol(string symbol)
         {
-            UnitPrefix inherentPrefix;
             var firstCharacter = symbol.Substring(0, 1);
             var baseSymbol = symbol.Substring(1);
 
-            if (string.IsNullOrEmpty(baseSymbol) || !UnitPrefix.Prefixes.TryGetValue(firstCharacter, out inherentPrefix))
+            if (string.IsNullOrEmpty(baseSymbol) || !UnitPrefix.Prefixes.TryGetValue(firstCharacter, out UnitPrefix inherentPrefix))
             {
                 throw new ArgumentException(Messages.InherentPrefixInvalid.FormatWith(symbol));
             }
 
-            this.InherentFactor = inherentPrefix.Factor;
-            this.BaseSymbol = baseSymbol;
+            InherentFactor = inherentPrefix.Factor;
+            BaseSymbol = baseSymbol;
         }
     }
 }
