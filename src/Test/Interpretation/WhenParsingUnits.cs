@@ -79,5 +79,14 @@ namespace Physics.Test.Presentation
         {
             Assert.Throws<FormatException>(() => System.Parse("kkg"));
         }
+
+        [Fact]
+        public void ThenInconsistentUnitCanBeParsed()
+        {
+            var result = System.Parse("h");
+            var expected = h;
+
+            Assert.Equal(result, expected);
+        }
     }
 }

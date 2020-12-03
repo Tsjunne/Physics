@@ -23,7 +23,7 @@ namespace Physics.Test.Presentation
             Assert.Equal("10000000 J", display);
 
             display = quantity.ToString(kWh);
-            Assert.Equal("2.77777777777778 kWh", display);
+            Assert.Equal("2.7777777777777777 kWh", display);
 
             display = quantity.ToString("N3", kWh);
             Assert.Equal("2.778 kWh", display);
