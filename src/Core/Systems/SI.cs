@@ -24,7 +24,7 @@
             C = System.AddDerivedUnit("C", "coulomb", s*A);
             V = System.AddDerivedUnit("V", "volt", W/A);
             F = System.AddDerivedUnit("F", "farad", C/V);
-            Ω = System.AddDerivedUnit("Ω", "joule", V/A);
+            Ω = System.AddDerivedUnit("Ω", "ohm", V/A);
             S = System.AddDerivedUnit("S", "siemens", A/V);
             Wb = System.AddDerivedUnit("Wb", "weber", V*s);
             T = System.AddDerivedUnit("T", "tesla", Wb*(s ^ -2));
